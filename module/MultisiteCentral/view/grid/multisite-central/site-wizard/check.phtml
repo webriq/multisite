@@ -1,0 +1,48 @@
+<?php $this->headLink()
+           ->appendStylesheet(
+                '/styles/modules/MultisiteCentral/site-wizard.css',
+                'all'
+            ); ?>
+<dl class="info">
+    <dt>
+        <?= $this->translate( 'central.site.create.subDomain', 'central' ) ?>
+    </dt>
+    <dd>
+        <ins><?= $this->escapeHtml( $this->stores['start']['subdomain'] )
+        ?></ins><span><?= $this->escapeHtml( $this->domainPostfix ); ?></span>
+    </dd>
+<?php if ( ! empty( $this->stores['start']['displayName'] ) ): ?>
+    <dt>
+        <?= $this->translate( 'central.site.create.displayName', 'central' ) ?>
+    </dt>
+    <dd>
+        <?= $this->escapeHtml( $this->stores['start']['displayName'] ) ?>
+    </dd>
+<?php endif ?>
+<?php if ( ! empty( $this->stores['start']['email'] ) ): ?>
+    <dt>
+        <?= $this->translate( 'central.site.create.email', 'central' ) ?>
+    </dt>
+    <dd>
+        <?= $this->escapeHtml( $this->stores['start']['email'] ) ?>
+    </dd>
+<?php endif ?>
+    <dt>
+        <?= $this->translate( 'central.site.create.title', 'central' ) ?>
+    </dt>
+    <dd>
+        <?= $this->escapeHtml( $this->stores['content']['title'] ) ?>
+    </dd>
+    <dt>
+        <?= $this->translate( 'central.site.create.locale', 'central' ) ?>
+    </dt>
+    <dd>
+        <?= $this->translate( 'locale.sub.' . $this->stores['content']['locale'], 'locale' ) ?>
+    </dd>
+    <dt>
+        <?= $this->translate( 'central.site.create.headTitle', 'central' ) ?>
+    </dt>
+    <dd>
+        <?= $this->escapeHtml( $this->stores['settings']['headTitle'] ) ?>
+    </dd>
+</dl>

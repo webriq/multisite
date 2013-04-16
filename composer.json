@@ -1,0 +1,27 @@
+{
+    "name": "webriq/gridguyz-multisite",
+    "description": "Multisite modules for Gridguyz",
+    "license": "CC-BY-SA-3.0",
+    "keywords": [
+        "gridguyz",
+        "module",
+        "multisite"
+    ],
+    "homepage": "http://gridguyz.com/",
+    "require": {
+        "php": ">=5.4",
+        "webriq/gridguyz-core": "*"
+    },
+    "autoload": {
+        "psr-0": {
+            "Grid\\DomainManager": "module/DomainManager/src/",
+            "Grid\\MultisiteCentral": "module/MultisiteCentral/src/",
+            "Grid\\MultisitePlatform": "module/MultisitePlatform/src/"
+        },
+        "classmap": [
+            "module/DomainManager/Module.php",
+            "module/MultisiteCentral/src/Module.php",
+            "module/MultisitePlatform/src/Module.php"
+        ]
+    }
+}

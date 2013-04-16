@@ -1,0 +1,49 @@
+<?php
+/**
+ * @var $this \Zend\View\Renderer\PhpRenderer
+ */
+$this->headTitle( $title = $this->translate( 'admin.navTop.system.gitLog', 'admin' ) );
+$view       = $this;
+$rowSet     = $this->rowSet();
+
+if ( ! $this->format ): ?>
+<h1><?= $title ?></h1>
+<?php endif ?>
+<?= $this->rowSet( $this->paginator, 0 )
+         ->setColumnTranslatePrefix( 'system.git.log.column' )
+         ->setColumnTranslatePostfix( 'title' )
+         ->setColumnTranslateTextDomain( 'system' )
+         ->setPage( $this->page )
+         ->setColumns( array(
+              'commit'          => function ( $row ) use ( $view ) {
+                  return sprintf(
+                      '<abbr title="%s">%s</abbr>',
+                      $view->escapeHtmlAttr( $row->commitHash ),
+                      $view->escapeHtml( $row->commitAbbr )
+                  );
+              },
+              'tree'            => function ( $row ) use ( $view ) {
+                  return sprintf(
+                      '<abbr title="%s">%s</abbr>',
+                      $view->escapeHtmlAttr( $row->treeHash ),
+                      $view->escapeHtml( $row->treeAbbr )
+                  );
+              },
+              'author'          => function ( $row ) use ( $view ) {
+                  return sprintf(
+                      '<a href="mailto:%s">%s</a>',
+                      $view->escapeHtmlAttr( $row->authorEmail ),
+                      $view->escapeHtml( $row->authorName )
+                  );
+              },
+              'committer'       => function ( $row ) use ( $view ) {
+                  return sprintf(
+                      '<a href="mailto:%s">%s</a>',
+                      $view->escapeHtmlAttr( $row->committerEmail ),
+                      $view->escapeHtml( $row->committerName )
+                  );
+              },
+              'committed'       => $rowSet::DATETIME,
+              'subject'         => $rowSet::STRING,
+          ) )
+         ->render( $this->format );

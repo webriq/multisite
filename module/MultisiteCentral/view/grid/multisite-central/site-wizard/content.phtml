@@ -1,0 +1,20 @@
+<?php
+
+$this->headLink()
+     ->appendStylesheet( '/styles/central.css', 'all' );
+
+?>
+<h3><?= $this->translate( 'central.site.create', 'central' ) ?></h3>
+<?php if ( ! $this->allowed ): ?>
+    <p class="warn">
+        <?= $this->translate( 'central.site.create.onlyWithLogin', 'central' ) ?>
+    </p>
+<?php elseif ( ! $this->isAllowed( 'central.site', 'create' ) ): ?>
+    <p class="warn">
+        <?= $this->translate( 'central.site.create.onlyWithRight', 'central' ) ?>
+    </p>
+<?php else: ?>
+    <div data-js-type="js.central.site.create">
+        <?= $this->form( $this->form, 'central' ) ?>
+    </div>
+<?php endif ?>
