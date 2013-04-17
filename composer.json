@@ -1,5 +1,6 @@
 {
     "name": "webriq/gridguyz-multisite",
+    "type": "gridguyz-modules",
     "description": "Multisite modules for Gridguyz",
     "license": "CC-BY-SA-3.0",
     "keywords": [
@@ -28,6 +29,7 @@
     },
     "require": {
         "php": ">=5.4",
+        "webriq/gridguyz-installer": "*",
         "webriq/gridguyz-core": "*"
     },
     "autoload": {
