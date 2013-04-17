@@ -1,0 +1,110 @@
+@charset "utf-8";
+
+.wizard .step-action.step-action-start
+{
+    text-align: center;
+}
+
+.wizard .step-action.step-action-start form dt,
+.wizard .step-action.step-action-content form dt,
+.wizard .step-action.step-action-settings form dt,
+.wizard .step-action.step-action-check dl.info dt
+{
+    width: 40%;
+    float: left;
+    clear: left;
+    text-align: right;
+}
+
+.wizard .step-action.step-action-start form dd
+{
+    text-align: center;
+}
+
+.wizard .step-action.step-action-start form dd input[type="text"]
+{
+    float: left;
+    margin-top: -1em;
+    margin-bottom: 1em;
+}
+
+.wizard .step-action.step-action-start form dd .description
+{
+    opacity: 1;
+    font-size: 100%;
+    margin: 1em 0em 1em 0em;
+    filter: none;
+}
+
+.wizard .step-action.step-action-start form dd .description span
+{
+    padding: 1em;
+    font-weight: bold;
+    display: inline-block;
+}
+
+.wizard .step-action.step-action-start form dd .description span,
+.wizard .step-action.step-action-check dl.info dd
+{
+    background: #242424;
+    box-shadow: 0px 0px 6px #000;
+    -ms-box-shadow: 0px 0px 6px #000;
+    -moz-box-shadow: 0px 0px 6px #000;
+    -webkit-box-shadow: 0px 0px 6px #000;
+}
+
+.wizard .step-action.step-action-start dd .description i,
+.wizard .step-action.step-action-start dd .description ins
+{
+    color: #4974e4;
+}
+
+.wizard .step-action.step-action-layout .ui-vslider .ui-vslider-content
+{
+    min-width: 830px;
+}
+
+.wizard .step-action.step-action-content form dt + dd,
+.wizard .step-action.step-action-settings form dt + dd,
+.wizard .step-action.step-action-check dl.info dd
+{
+    margin-left: 42%;
+}
+
+.wizard .step-action.step-action-check dl.info
+{
+    margin: 0em;
+    padding: 1em 0em;
+}
+
+.wizard .step-action.step-action-check dl.info dt:after
+{
+    content: ":";
+}
+
+.wizard .step-action.step-action-check dl.info dt,
+.wizard .step-action.step-action-check dl.info dd
+{
+    margin: 0.5em;
+    padding: 0.5em;
+    font-weight: bold;
+}
+
+.wizard .step-action.step-action-check dl.info dd
+{
+    float: left;
+    color: #4574e6;
+    min-width: 200px;
+    text-align: left;
+    display: inline-block;
+}
+
+.wizard .step-action.step-action-check dl.info dd ins
+{
+    text-decoration: none;
+}
+
+.wizard .step-action.step-action-check dl.info dd span
+{
+    color: #dfdfdf;
+}
