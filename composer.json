@@ -43,5 +43,10 @@
             "module/MultisiteCentral/src/Module.php",
             "module/MultisitePlatform/src/Module.php"
         ]
+    },
+    "extra": {
+        "patch-classes": {
+            "Grid\\MultisitePlatform\\Installer\\Patch": "module/MultisitePlatform/src/Grid/MultisitePlatform/Installer/Patch.php"
+        }
     }
 }
