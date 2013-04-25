@@ -59,6 +59,9 @@ class Patch extends AbstractPatch
             {
                 $domain = $this->insertDefaultDomain( $site );
             }
+
+            $this->getInstaller()
+                 ->convertToMultisite();
         }
     }
 
@@ -94,7 +97,7 @@ class Patch extends AbstractPatch
             'gridguyz-multisite',
             'domain',
             'Type the default domain name',
-            $this->getDefaultDomain(),
+            php_uname( 'n' ),
             '/([a-z0-9\-]+\.)+[a-z]{2,}/i',
             3
         );
@@ -106,31 +109,6 @@ class Patch extends AbstractPatch
                 'siteId'    => $site,
             )
         );
-    }
-
-    /**
-     * Get default domain
-     *
-     * @return  string|null
-     */
-    private function getDefaultDomain()
-    {
-        if ( ! empty( $_SERVER['HTTP_HOST'] ) )
-        {
-            return $_SERVER['HTTP_HOST'];
-        }
-
-        if ( ! empty( $_SERVER['SERVER_NAME'] ) )
-        {
-            return $_SERVER['SERVER_NAME'];
-        }
-
-        if ( ! empty( $_SERVER['SERVER_ADDR'] ) )
-        {
-            return @gethostbyaddr( $_SERVER['SERVER_ADDR'] ) ?: null;
-        }
-
-        return null;
     }
 
 }
