@@ -1,15 +1,62 @@
 --------------------------------------------------------------------------------
--- table: add foreign key: user.id -> _central.user.id                        --
+-- copy data into _central.user                                               --
 --------------------------------------------------------------------------------
+
+ALTER TABLE "_central"."user"
+    DISABLE TRIGGER USER;
 
 INSERT INTO "_central"."user" ( "id", "email" )
      SELECT "id",
             "email"
-       FROM "user"
-      WHERE "id" NOT IN (
-                SELECT "id"
-                  FROM "_central"."user"
-            );
+       FROM "user";
+
+ALTER TABLE "_central"."user"
+     ENABLE TRIGGER USER;
+
+--------------------------------------------------------------------------------
+-- copy data into _central.user_x_site                                        --
+--------------------------------------------------------------------------------
+
+ALTER TABLE "_central"."user_x_site"
+    DISABLE TRIGGER USER;
+
+INSERT INTO "_central"."user_x_site" ( "siteId", "userId", "displayName", "passwordHash", "state", "confirmed", "locale", "groupId", "original" )
+     SELECT "site"."id" AS "siteId",
+            "user"."id",
+            "user"."displayName",
+            "user"."passwordHash",
+            "user"."state",
+            "user"."confirmed",
+            "user"."locale",
+            "user"."groupId",
+            TRUE AS "original"
+       FROM "user",
+            "_central"."site";
+
+ALTER TABLE "_central"."user_x_site"
+     ENABLE TRIGGER USER;
+
+--------------------------------------------------------------------------------
+-- copy data into _central.subdomain                                          --
+--------------------------------------------------------------------------------
+
+ALTER TABLE "_central"."subdomain"
+    DISABLE TRIGGER USER;
+
+INSERT INTO "_central"."subdomain" ( "siteId", "id", "subdomain", "locale" )
+     SELECT "site"."id" AS "siteId",
+            "subdomain"."id",
+            "subdomain"."subdomain",
+            "subdomain"."locale"
+       FROM "subdomain",
+            "_central"."site";
+
+ALTER TABLE "_central"."subdomain"
+     ENABLE TRIGGER USER;
+
+--------------------------------------------------------------------------------
+-- table: add foreign key: user.id -> _central.user.id                        --
+--------------------------------------------------------------------------------
 
 ALTER TABLE "user"
   ADD FOREIGN KEY ( "id" )
