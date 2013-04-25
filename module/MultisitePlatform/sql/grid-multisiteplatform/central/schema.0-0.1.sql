@@ -12,6 +12,25 @@ CREATE TABLE "_central"."user"
 );
 
 --------------------------------------------------------------------------------
+-- table: site                                                                --
+--------------------------------------------------------------------------------
+
+CREATE TABLE "_central"."site"
+(
+    "id"        SERIAL                      NOT NULL,
+    "schema"    CHARACTER VARYING           NOT NULL,
+    "ownerId"   INTEGER                     NOT NULL,
+    "created"   TIMESTAMP WITH TIME ZONE    NOT NULL    DEFAULT CURRENT_TIMESTAMP,
+
+    PRIMARY KEY ( "id" ),
+    UNIQUE ( "schema" ),
+    FOREIGN KEY ( "ownerId" )
+     REFERENCES "_central"."user" ( "id" )
+      ON UPDATE RESTRICT
+      ON DELETE RESTRICT
+);
+
+--------------------------------------------------------------------------------
 -- table: user_unified                                                        --
 --------------------------------------------------------------------------------
 
@@ -57,25 +76,6 @@ CREATE TABLE "_central"."user_x_site"
      REFERENCES "_central"."user" ( "id" )
       ON UPDATE CASCADE
       ON DELETE CASCADE
-);
-
---------------------------------------------------------------------------------
--- table: site                                                                --
---------------------------------------------------------------------------------
-
-CREATE TABLE "_central"."site"
-(
-    "id"        SERIAL                      NOT NULL,
-    "schema"    CHARACTER VARYING           NOT NULL,
-    "ownerId"   INTEGER                     NOT NULL,
-    "created"   TIMESTAMP WITH TIME ZONE    NOT NULL    DEFAULT CURRENT_TIMESTAMP,
-
-    PRIMARY KEY ( "id" ),
-    UNIQUE ( "schema" ),
-    FOREIGN KEY ( "ownerId" )
-     REFERENCES "_central"."user" ( "id" )
-      ON UPDATE RESTRICT
-      ON DELETE RESTRICT
 );
 
 --------------------------------------------------------------------------------
