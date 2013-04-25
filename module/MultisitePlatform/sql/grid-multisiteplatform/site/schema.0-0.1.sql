@@ -14,6 +14,23 @@ ALTER TABLE "_central"."user"
      ENABLE TRIGGER USER;
 
 --------------------------------------------------------------------------------
+-- create site into _central.site                                             --
+--------------------------------------------------------------------------------
+
+ALTER TABLE "_central"."site"
+    DISABLE TRIGGER USER;
+
+INSERT INTO "_central"."site" ( "schema", "ownerId" )
+     SELECT CURRENT_SCHEMA AS "schema",
+            "id" AS "ownerId"
+       FROM "user"
+      WHERE "groupId" = 2
+      LIMIT 1;
+
+ALTER TABLE "_central"."site"
+     ENABLE TRIGGER USER;
+
+--------------------------------------------------------------------------------
 -- copy data into _central.user_x_site                                        --
 --------------------------------------------------------------------------------
 
