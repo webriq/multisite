@@ -179,6 +179,14 @@ CREATE OR REPLACE FUNCTION "_central"."site__create_schema"()
                         AS $$
 BEGIN
 
+    IF EXISTS( SELECT schema_name
+                 FROM information_schema.schemata
+                WHERE schema_name = NEW."schema" ) THEN
+
+        RETURN NEW;
+
+    END IF;
+
     PERFORM "_common"."copy_schema"(
         CAST(
             ( SELECT "value"
