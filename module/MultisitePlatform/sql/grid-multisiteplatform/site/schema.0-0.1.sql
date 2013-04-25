@@ -2,6 +2,15 @@
 -- table: add foreign key: user.id -> _central.user.id                        --
 --------------------------------------------------------------------------------
 
+INSERT INTO "_central"."user" ( "id", "email" )
+     SELECT "id",
+            "email"
+       FROM "user"
+      WHERE "id" NOT IN (
+                SELECT "id"
+                  FROM "_central"."user"
+            );
+
 ALTER TABLE "user"
   ADD FOREIGN KEY ( "id" )
        REFERENCES "_central"."user" ( "id" )
