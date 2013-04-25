@@ -179,9 +179,9 @@ CREATE OR REPLACE FUNCTION "_central"."site__create_schema"()
                         AS $$
 BEGIN
 
-    IF EXISTS( SELECT schema_name
-                 FROM information_schema.schemata
-                WHERE schema_name = NEW."schema" ) THEN
+    IF EXISTS( SELECT SCHEMA_NAME
+                 FROM INFORMATION_SCHEMA.SCHEMATA
+                WHERE SCHEMA_NAME = NEW."schema" ) THEN
 
         RETURN NEW;
 
