@@ -40,8 +40,8 @@
         },
         "classmap": [
             "module/DomainManager/Module.php",
-            "module/MultisiteCentral/src/Module.php",
-            "module/MultisitePlatform/src/Module.php"
+            "module/MultisiteCentral/Module.php",
+            "module/MultisitePlatform/Module.php"
         ]
     },
     "extra": {
