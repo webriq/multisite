@@ -142,7 +142,7 @@ class Patch extends AbstractPatch
             ),
         ) );
 
-        $installer->mergeConfigData( 'multisite', array(
+        $installer->mergeConfigData( 'multisite.local', array(
             'modules' => array(
                 'Grid\MultisiteCentral' => array(
                     'schemaPrefix'  => 'site_',
