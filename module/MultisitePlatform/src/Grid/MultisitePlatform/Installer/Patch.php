@@ -31,6 +31,14 @@ class Patch extends AbstractPatch
     {
         if ( $this->isZeroVersion( $from ) )
         {
+            $this->insertIntoTable(
+                'module',
+                array(
+                    'module'    => 'Grid\\MultisiteCentral',
+                    'enabled'   => 't',
+                )
+            );
+
             $platformOwner = $this->selectFromTable( 'user', 'id', array(
                 'groupId' => static::SITE_OWNER_GROUP,
             ) );
