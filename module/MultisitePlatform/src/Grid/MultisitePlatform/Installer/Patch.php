@@ -145,7 +145,7 @@ class Patch extends AbstractPatch
             ),
             'service_manager' => array(
                 'invokables' => array(
-                    'SiteConfiguration' => 'Zork\Db\SiteConfiguration\Multisite',
+                    'SiteConfiguration' => 'Grid\MultisitePlatform\SiteConfiguration\Multisite',
                 ),
             ),
         ) );
