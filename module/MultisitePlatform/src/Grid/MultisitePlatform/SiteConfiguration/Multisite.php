@@ -31,7 +31,7 @@ class Multisite extends AbstractDomainAware
 
         $query = $db->query( '
             SELECT *
-              FROM ' . $platform->quoteIdentifier( 'central' ) . '.'
+              FROM ' . $platform->quoteIdentifier( '_central' ) . '.'
                      . $platform->quoteIdentifier( 'fulldomain' ) . '
              WHERE ' . $platform->quoteIdentifier( 'fulldomain' ) . '
                  = ' . $driver->formatParameterName( 'fulldomain' ) . '
