@@ -21,7 +21,7 @@ INSERT INTO "_central"."user" ( "id", "email" )
 ALTER TABLE "_central"."user"
      ENABLE TRIGGER USER;
 
-PERFORM setval(
+SELECT setval(
     '_central.user_id_seq',
     ( SELECT "last_value" + 1 FROM "user_id_seq" ),
     FALSE
