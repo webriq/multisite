@@ -233,79 +233,39 @@ DECLARE
     "v_site_id" INTEGER;
 BEGIN
 
-    IF NEW."schema" = ( SELECT "value"
-                          FROM "_central"."settings"
-                         WHERE "key" = 'site.createSchema.siteCreatorSiteSchema'
-                         LIMIT 1 ) THEN
+    SELECT "id"
+      INTO "v_site_id"
+      FROM "_central"."site"
+     WHERE "schema" = (
+                SELECT "value"
+                  FROM "_central"."settings"
+                 WHERE "key" = 'site.createSchema.siteCreatorSiteSchema'
+                 LIMIT 1
+             );
 
-        INSERT INTO "_central"."user_x_site"(
-            "userId",
-            "siteId",
-            "displayName",
-            "passwordHash",
-            "state",
-            "confirmed",
-            "original",
-            "groupId",
-            "locale"
-        ) VALUES (
-            NEW."ownerId",
-            NEW."id",
-            ( SELECT "value"
-                FROM "_central"."settings"
-               WHERE "key" = 'site.createSchema.user.platformOwner.displayName'
-               LIMIT 1 ),
-            ( SELECT "value"
-                FROM "_central"."settings"
-               WHERE "key" = 'site.createSchema.user.platformOwner.passwordHash'
-               LIMIT 1 ),
-            'active',
-            TRUE,
-            TRUE,
-            2, -- site-owner
-            ( SELECT "value"
-                FROM "_central"."settings"
-               WHERE "key" = 'site.createSchema.user.platformOwner.locale'
-               LIMIT 1 )
-        );
-
-    ELSE
-
-        SELECT "id"
-          INTO "v_site_id"
-          FROM "_central"."site"
-         WHERE "schema" = (
-                    SELECT "value"
-                      FROM "_central"."settings"
-                     WHERE "key" = 'site.createSchema.siteCreatorSiteSchema'
-                     LIMIT 1
-                 );
-
-        INSERT INTO "_central"."user_x_site"
-                    ( "userId",
-                      "siteId",
-                      "displayName",
-                      "passwordHash",
-                      "state",
-                      "confirmed",
-                      "original",
-                      "groupId",
-                      "locale" )
-              SELECT NEW."ownerId"  AS "userId",
-                     NEW."id"       AS "siteId",
-                     "displayName",
-                     "passwordHash",
-                     'active'       AS "state",
-                     TRUE           AS "confirmed",
-                     TRUE           AS "original",
-                     2              AS "groupId", -- site-owner
-                     "locale"
-                FROM "_central"."user_x_site"
-               WHERE "siteId" = "v_site_id"
-                 AND "userId" = NEW."ownerId"
-               LIMIT 1;
-
-    END IF;
+    INSERT INTO "_central"."user_x_site"
+                ( "userId",
+                  "siteId",
+                  "displayName",
+                  "passwordHash",
+                  "state",
+                  "confirmed",
+                  "original",
+                  "groupId",
+                  "locale" )
+          SELECT NEW."ownerId"  AS "userId",
+                 NEW."id"       AS "siteId",
+                 "displayName",
+                 "passwordHash",
+                 'active'       AS "state",
+                 TRUE           AS "confirmed",
+                 TRUE           AS "original",
+                 2              AS "groupId", -- site-owner
+                 "locale"
+            FROM "_central"."user_x_site"
+           WHERE "siteId" = "v_site_id"
+             AND "userId" = NEW."ownerId"
+           LIMIT 1;
 
     -- every auto-generated user will be unified
 

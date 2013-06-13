@@ -2,6 +2,14 @@
 -- copy data into _central.user                                               --
 --------------------------------------------------------------------------------
 
+INSERT INTO "_central"."settings" ( "key", "value" )
+                           VALUES ( 'site.createSchema.siteCreatorSiteSchema',
+                                    CURRENT_SCHEMA );
+
+--------------------------------------------------------------------------------
+-- copy data into _central.user                                               --
+--------------------------------------------------------------------------------
+
 ALTER TABLE "_central"."user"
     DISABLE TRIGGER USER;
 
