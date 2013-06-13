@@ -1,5 +1,5 @@
 --------------------------------------------------------------------------------
--- copy data into _central.user                                               --
+-- set current schema at settings:site.createSchema.siteCreatorSiteSchema     --
 --------------------------------------------------------------------------------
 
 INSERT INTO "_central"."settings" ( "key", "value" )
