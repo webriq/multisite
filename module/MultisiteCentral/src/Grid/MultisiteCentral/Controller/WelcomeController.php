@@ -99,13 +99,8 @@ class WelcomeController extends AbstractActionController
             ),
         ) );
 
-        $auth = new AuthenticationService;
-
         return array(
-            'form'      => $form,
-            'allowed'   => $auth->hasIdentity() || ! empty(
-                $config['features']['registrationEnabled']
-            ),
+            'form' => $form,
         );
     }
 

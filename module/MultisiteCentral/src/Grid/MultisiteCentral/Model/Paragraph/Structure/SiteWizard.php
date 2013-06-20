@@ -2,7 +2,6 @@
 
 namespace Grid\MultisiteCentral\Model\Paragraph\Structure;
 
-use Zend\Authentication\AuthenticationService;
 use Grid\Paragraph\Model\Paragraph\Structure\AbstractLeaf;
 
 /**
@@ -28,33 +27,15 @@ class SiteWizard extends AbstractLeaf
     protected static $viewOpen = 'grid/paragraph/render/siteWizard';
 
     /**
-     * Is site-wizard allowed
-     *
-     * @return bool
-     */
-    public function getAllowed()
-    {
-        $auth   = new AuthenticationService;
-        $config = $this->getServiceLocator()
-                       ->get( 'Config'  )
-                            [ 'modules' ]
-                            [ 'Grid\User'    ];
-
-        return $auth->hasIdentity() || ! empty(
-            $config['features']['registrationEnabled']
-        );
-    }
-
-    /**
      * Get site-wizard start form
      *
      * @return \Zend\Form\Form
      */
     public function getForm( $action )
     {
-        $form   = $this->getServiceLocator()
-                       ->get( 'Form' )
-                       ->create( 'Grid\MultisiteCentral\SiteWizard\Start' );
+        $form = $this->getServiceLocator()
+                     ->get( 'Form' )
+                     ->create( 'Grid\MultisiteCentral\SiteWizard\Start' );
 
         $form->setAttributes( array(
             'target' => '_blank',

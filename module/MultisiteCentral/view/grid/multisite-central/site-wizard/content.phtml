@@ -3,15 +3,39 @@
 $this->headLink()
      ->appendStylesheet( '/styles/central.css', 'all' );
 
+$warn                   = false;
+$auth                   = new \Zend\Authentication\AuthenticationService;
+$config                 = $this->getAppService( 'Config' );
+$isRegistrationEnabled  = ! empty( $config['features']['registrationEnabled'] );
+
+if ( $auth->hasIdentity() )
+{
+    if ( ! $this->isAllowed( 'central.site', 'create' ) )
+    {
+        $warn = 'onlyWithRight';
+    }
+}
+else if ( $isRegistrationEnabled )
+{
+    $groupModel     = $this->getAppService( 'Grid\User\Model\User\Group\Model' );
+    $defaultGroup   = $groupModel->findDefault();
+
+    if ( empty( $defaultGroup ) ||
+         ! $this->isAllowed( 'central.site', 'create', $defaultGroup ) )
+    {
+        $warn = 'onlyWithLogin';
+    }
+}
+else
+{
+    $warn = 'onlyWithRight';
+}
+
 ?>
 <h3><?= $this->translate( 'central.site.create', 'central' ) ?></h3>
-<?php if ( ! $this->allowed ): ?>
+<?php if ( $warn ): ?>
     <p class="warn">
-        <?= $this->translate( 'central.site.create.onlyWithLogin', 'central' ) ?>
-    </p>
-<?php elseif ( ! $this->isAllowed( 'central.site', 'create' ) ): ?>
-    <p class="warn">
-        <?= $this->translate( 'central.site.create.onlyWithRight', 'central' ) ?>
+        <?= $this->translate( 'central.site.create.' . $warn, 'central' ) ?>
     </p>
 <?php else: ?>
     <div data-js-type="js.central.site.create">

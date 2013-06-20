@@ -21,7 +21,7 @@ return array(
     'central.site.create.keywords' => 'Keywords',
     'central.site.create.layout' => 'Layout',
     'central.site.create.locale' => 'Language',
-    'central.site.create.onlyWithLogin' => 'Please login, to create your site here.',
+    'central.site.create.onlyWithLogin' => 'Please register or login.',
     'central.site.create.onlyWithRight' => 'You are not allowed to create a new site.',
     'central.site.create.step.check' => 'Check',
     'central.site.create.step.paragraph' => 'Paragraphs',
