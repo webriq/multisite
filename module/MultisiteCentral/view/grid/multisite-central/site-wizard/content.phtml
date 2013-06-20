@@ -5,7 +5,7 @@ $this->headLink()
 
 $warn                   = false;
 $auth                   = new \Zend\Authentication\AuthenticationService;
-$config                 = $this->getAppService( 'Config' );
+$config                 = $this->appService( 'Config' );
 $isRegistrationEnabled  = ! empty( $config['features']['registrationEnabled'] );
 
 if ( $auth->hasIdentity() )
@@ -17,7 +17,7 @@ if ( $auth->hasIdentity() )
 }
 else if ( $isRegistrationEnabled )
 {
-    $groupModel     = $this->getAppService( 'Grid\User\Model\User\Group\Model' );
+    $groupModel     = $this->appService( 'Grid\User\Model\User\Group\Model' );
     $defaultGroup   = $groupModel->findDefault();
 
     if ( empty( $defaultGroup ) ||
