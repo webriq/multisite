@@ -6,7 +6,10 @@ $this->headLink()
 $warn                   = false;
 $auth                   = new \Zend\Authentication\AuthenticationService;
 $config                 = $this->appService( 'Config' );
-$isRegistrationEnabled  = ! empty( $config['features']['registrationEnabled'] );
+$isRegistrationEnabled  = ! empty( $config[ 'modules'               ]
+                                          [ 'Grid\User'             ]
+                                          [ 'features'              ]
+                                          [ 'registrationEnabled'   ] );
 
 if ( $auth->hasIdentity() )
 {
