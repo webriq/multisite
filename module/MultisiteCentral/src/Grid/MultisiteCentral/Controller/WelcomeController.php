@@ -131,4 +131,53 @@ class WelcomeController extends AbstractActionController
         );
     }
 
+    /**
+     * Delete site action (only owned)
+     */
+    public function deleteSiteAction()
+    {
+        $auth   = new AuthenticationService;
+        $params = $this->params();
+
+        if ( ! $auth->hasIdentity() )
+        {
+            $this->getResponse()
+                 ->setStatusCode( 403 );
+
+            return;
+        }
+
+        /* @var $model \Grid\MultisiteCentral\Model\Site\Model */
+        /* @var $site \Grid\MultisiteCentral\Model\Site\Structure */
+        $model = $this->getServiceLocator()
+                      ->get( 'Grid\MultisiteCentral\Model\Site\Model' );
+        $site  = $model->find( $params->fromRoute( 'id' ) );
+
+        if ( empty( $site ) )
+        {
+            $this->getResponse()
+                 ->setStatusCode( 404 );
+
+            return;
+        }
+
+        if ( $site->ownerId != $auth->getIdentity()->id )
+        {
+            $this->getResponse()
+                 ->setStatusCode( 403 );
+
+            return;
+        }
+
+        if ( ! $site->delete() )
+        {
+            throw new \LogicException( 'Site cannot be deleted' );
+        }
+
+        return $this->redirect()
+                    ->toRoute( 'Grid\MultisiteCentral\Welcome\Index', array(
+                        'locale' => (string) $this->locale(),
+                    ) );
+    }
+
 }

@@ -13,6 +13,16 @@ return array(
                     ),
                 ),
             ),
+            'Grid\MultisiteCentral\Welcome\DeleteSite' => array(
+                'type'      => 'Zend\Mvc\Router\Http\Segment',
+                'options'   => array(
+                    'route'     => '/app/:locale/central/delete-site/:id',
+                    'defaults'  => array(
+                        'controller' => 'Grid\MultisiteCentral\Controller\Welcome',
+                        'action'     => 'delete-site',
+                    ),
+                ),
+            ),
             'Grid\MultisiteCentral\SiteAdmin\List' => array(
                 'type'      => 'Zend\Mvc\Router\Http\Segment',
                 'options'   => array(
