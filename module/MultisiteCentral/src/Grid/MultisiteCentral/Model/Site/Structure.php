@@ -113,6 +113,8 @@ class Structure extends MapperAwareAbstract
                 @ unlink( $pathname );
             }
         }
+
+        @ rmdir( $dir );
     }
 
     /**
