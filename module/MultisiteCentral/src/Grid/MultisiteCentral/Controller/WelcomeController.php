@@ -70,14 +70,9 @@ class WelcomeController extends AbstractActionController
             return;
         }
 
-        $form   = $this->getServiceLocator()
-                       ->get( 'Form' )
-                       ->create( 'Grid\MultisiteCentral\SiteWizard\Start' );
-
-        $config = $this->getServiceLocator()
-                       ->get( 'Config'  )
-                            [ 'modules' ]
-                            [ 'Grid\User'    ];
+        $form = $this->getServiceLocator()
+                     ->get( 'Form' )
+                     ->create( 'Grid\MultisiteCentral\SiteWizard\Start' );
 
         $form->setAttributes( array(
             'target' => '_blank',
