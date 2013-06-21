@@ -144,8 +144,8 @@ CREATE TABLE "_central"."domain"
     UNIQUE ( "domain" ),
     FOREIGN KEY ( "siteId" )
      REFERENCES "_central"."site" ( "id" )
-      ON UPDATE RESTRICT
-      ON DELETE RESTRICT
+      ON UPDATE CASCADE
+      ON DELETE CASCADE
 );
 
 --------------------------------------------------------------------------------
