@@ -25,21 +25,17 @@ class AutoLoginController extends AbstractActionController
         $domain = $this->params()
                        ->fromRoute( 'domain' );
 
-        if ( ! $auth->hasIdentity() )
-        {
-            $this->paragraphLayout();
-
-            $this->getResponse()
-                 ->setStatusCode( 403 );
-
-            return;
-        }
-
         if ( empty( $domain ) || ! strstr( $domain, '.' ) )
         {
             throw new RuntimeException(
                 'Domain is not supplied, or invalid'
             );
+        }
+
+        if ( ! $auth->hasIdentity() )
+        {
+            return $this->redirect()
+                        ->toUrl( 'http://' . $domain );
         }
 
         $store = $this->getServiceLocator()
