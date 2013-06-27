@@ -466,38 +466,34 @@ BEGIN
       FROM "_central"."site"
      WHERE "site"."id" = NEW."siteId";
 
-    EXECUTE 'SET LOCAL search_path TO '
-         || QUOTE_IDENT( "v_schema" )
-         || ', "_common"';
-
-    SELECT COUNT( * ) < 1
-      INTO "v_not_exists"
-      FROM "user"
-     WHERE "id" = NEW."userId";
+    EXECUTE format(
+                'SELECT COUNT( * ) = 0
+                   FROM %I."user"
+                  WHERE "id" = $1',
+                "vSchema"
+            )
+       INTO "v_not_exists"
+      USING NEW."userId";
 
     IF "v_not_exists" THEN
 
-        INSERT INTO "user" (
-            "id",
-            "email",
-            "displayName",
-            "passwordHash",
-            "state",
-            "confirmed",
-            "groupId",
-            "locale"
-        ) VALUES (
-            NEW."userId",
-            ( SELECT "user"."email"
-                FROM "_central"."user"
-               WHERE "user"."id" = NEW."userId" ),
-            NEW."displayName",
-            NEW."passwordHash",
-            NEW."state",
-            NEW."confirmed",
-            NEW."groupId",
-            NEW."locale"
-        );
+        EXECUTE format(
+                    'INSERT INTO %I."user" ( "id", "email", "displayName",
+                                             "passwordHash", "state",
+                                             "confirmed", "groupId", "locale" )
+                          VALUES ( $1, ( SELECT "user"."email"
+                                           FROM "_central"."user"
+                                          WHERE "user"."id" = $1 ),
+                                   $2, $3, $4, $5, $6, $7 )',
+                    "vSchema"
+                )
+          USING NEW."userId",
+                NEW."displayName",
+                NEW."passwordHash",
+                NEW."state",
+                NEW."confirmed",
+                NEW."groupId",
+                NEW."locale";
 
     END IF;
 
