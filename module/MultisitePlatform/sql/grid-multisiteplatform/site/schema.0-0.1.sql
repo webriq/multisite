@@ -253,6 +253,7 @@ BEGIN
          WHERE "email" = NEW."email"
     );
 
+    PERFORM setval( 'user_id_seq', NEW."id" );
     RETURN NEW;
 
 END $$;
