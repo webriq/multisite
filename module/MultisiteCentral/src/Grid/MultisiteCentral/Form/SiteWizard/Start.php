@@ -4,7 +4,6 @@ namespace Grid\MultisiteCentral\Form\SiteWizard;
 
 use Zork\Form\Form;
 use Zork\Form\PrepareElementsAwareInterface;
-use Zend\Authentication\AuthenticationService;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 
 /**
@@ -26,14 +25,6 @@ class Start extends Form
      */
     public function prepareElements()
     {
-        $auth = new AuthenticationService;
-
-        if ( $auth->hasIdentity() )
-        {
-            $this->remove( 'displayName' );
-            $this->remove( 'email' );
-        }
-
         $subdomain = $this->get( 'subdomain' );
         $subdomain->setOptions( array_merge(
             $subdomain->getOptions(),

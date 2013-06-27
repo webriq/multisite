@@ -215,6 +215,21 @@ return array(
                         ),
                     ),
                 ),
+                'terms' => array(
+                    'spec'  => array(
+                        'type'      => 'Zork\Form\Element\Checkbox',
+                        'name'      => 'terms',
+                        'options'   => array(
+                            'required'      => true,
+                            'label'         => null,
+                            'label_enable'  => 'central.site.create.terms',
+                        ),
+                    ),
+                ),
+            ),
+        ),
+        'Grid\MultisiteCentral\SiteWizard\User' => array(
+            'elements'  => array(
                 'displayName' => array(
                     'spec'  => array(
                         'type'      => 'Zork\Form\Element\Text',
@@ -241,14 +256,24 @@ return array(
                         ),
                     ),
                 ),
-                'terms' => array(
+                'password' => array(
                     'spec'  => array(
-                        'type'      => 'Zork\Form\Element\Checkbox',
-                        'name'      => 'terms',
+                        'type'      => 'Zork\Form\Element\Password',
+                        'name'      => 'password',
                         'options'   => array(
-                            'required'      => true,
-                            'label'         => null,
-                            'label_enable'  => 'central.site.create.terms',
+                            'required'  => true,
+                            'label'     => 'central.site.create.password',
+                        ),
+                    ),
+                ),
+                'passwordVerify'    => array(
+                    'spec'          => array(
+                        'type'      => 'Zork\Form\Element\Password',
+                        'name'      => 'passwordVerify',
+                        'options'   => array(
+                            'label'     => 'central.site.create.passwordVerify',
+                            'required'  => true,
+                            'identical' => 'password',
                         ),
                     ),
                 ),

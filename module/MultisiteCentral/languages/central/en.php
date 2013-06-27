@@ -23,6 +23,8 @@ return array(
     'central.site.create.locale' => 'Language',
     'central.site.create.onlyWithLogin' => 'Please register or login.',
     'central.site.create.onlyWithRight' => 'You are not allowed to create a new site.',
+    'central.site.create.password' => 'Password',
+    'central.site.create.passwordVerify' => 'Repeat password',
     'central.site.create.step.check' => 'Check',
     'central.site.create.step.paragraph' => 'Paragraphs',
     'central.site.create.step.settings' => 'Settings',

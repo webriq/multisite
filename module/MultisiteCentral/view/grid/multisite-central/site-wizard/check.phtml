@@ -11,20 +11,20 @@
         <ins><?= $this->escapeHtml( $this->stores['start']['subdomain'] )
         ?></ins><span><?= $this->escapeHtml( $this->domainPostfix ); ?></span>
     </dd>
-<?php if ( ! empty( $this->stores['start']['displayName'] ) ): ?>
+<?php if ( ! empty( $this->stores['user']['displayName'] ) ): ?>
     <dt>
         <?= $this->translate( 'central.site.create.displayName', 'central' ) ?>
     </dt>
     <dd>
-        <?= $this->escapeHtml( $this->stores['start']['displayName'] ) ?>
+        <?= $this->escapeHtml( $this->stores['user']['displayName'] ) ?>
     </dd>
 <?php endif ?>
-<?php if ( ! empty( $this->stores['start']['email'] ) ): ?>
+<?php if ( ! empty( $this->stores['user']['email'] ) ): ?>
     <dt>
         <?= $this->translate( 'central.site.create.email', 'central' ) ?>
     </dt>
     <dd>
-        <?= $this->escapeHtml( $this->stores['start']['email'] ) ?>
+        <?= $this->escapeHtml( $this->stores['user']['email'] ) ?>
     </dd>
 <?php endif ?>
     <dt>

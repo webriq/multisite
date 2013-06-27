@@ -37,6 +37,17 @@ class SiteWizardController extends AbstractWizardController
         {
             case $this->startStep:
 
+                $auth = new AuthenticationService;
+
+                $model->setOptions( array(
+                    'finish'    => false,
+                    'next'      => $auth->hasIdentity() ? 'layout' : 'user',
+                ) );
+
+                break;
+
+            case 'user':
+
                 $model->setOptions( array(
                     'finish'    => false,
                     'next'      => 'layout',
@@ -163,6 +174,7 @@ class SiteWizardController extends AbstractWizardController
     {
         $auth           = new AuthenticationService;
         $startData      = $this->getStepStore( 'start' );
+        $userData       = $this->getStepStore( 'user' );
         $settingsData   = $this->getStepStore( 'settings' );
         $layoutData     = $this->getStepStore( 'layout' );
         $contentData    = $this->getStepStore( 'content' );
@@ -184,8 +196,9 @@ class SiteWizardController extends AbstractWizardController
                                ->get( 'Grid\User\Model\User\Model' );
 
             $user = $userModel->register( array(
-                'email'         => $startData['email'],
-                'displayName'   => $startData['displayName'],
+                'email'         => $userData['email'],
+                'displayName'   => $userData['displayName'],
+                'password'      => $userData['password'],
                 'locale'        => (string) $this->locale(),
                 'confirmed'     => true,
             ) );
