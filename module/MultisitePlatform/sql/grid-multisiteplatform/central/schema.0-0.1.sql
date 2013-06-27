@@ -435,12 +435,11 @@ BEGIN
 
     IF "v_schema" IS NOT NULL THEN
 
-        EXECUTE 'SET LOCAL search_path TO '
-             || QUOTE_IDENT( "v_schema" )
-             || ', "_common"';
-
-        DELETE FROM "user"
-              WHERE "id" = OLD."userId";
+        EXECUTE format(
+                    'DELETE FROM %I."user" WHERE "id" = $1',
+                    "v_schema"
+                )
+          USING OLD."userId";
 
     END IF;
 
@@ -518,24 +517,30 @@ BEGIN
       FROM "_central"."site"
      WHERE "site"."id" = NEW."siteId";
 
-    EXECUTE 'SET LOCAL search_path TO '
-         || QUOTE_IDENT( "v_schema" )
-         || ', "_common"';
-
-    UPDATE "user"
-       SET "displayName"    =  NEW."displayName",
-           "passwordHash"   =  NEW."passwordHash",
-           "state"          =  NEW."state",
-           "confirmed"      =  NEW."confirmed",
-           "groupId"        =  NEW."groupId",
-           "locale"         =  NEW."locale"
-     WHERE "id"             =  NEW."userId"
-       AND ( "displayName"  <> NEW."displayName"
-          OR "passwordHash" <> NEW."passwordHash"
-          OR "state"        <> NEW."state"
-          OR "confirmed"    <> NEW."confirmed"
-          OR "groupId"      <> NEW."groupId"
-          OR "locale"       <> NEW."locale" );
+    EXECUTE format(
+                'UPDATE %I."user"
+                    SET "displayName"    =  $1,
+                        "passwordHash"   =  $2,
+                        "state"          =  $3,
+                        "confirmed"      =  $4,
+                        "groupId"        =  $5,
+                        "locale"         =  $6
+                  WHERE "id"             =  $7
+                    AND ( "displayName"  <> $1
+                       OR "passwordHash" <> $2
+                       OR "state"        <> $3
+                       OR "confirmed"    <> $4
+                       OR "groupId"      <> $5
+                       OR "locale"       <> $6 )',
+                "v_schema"
+            )
+      USING NEW."displayName",
+            NEW."passwordHash",
+            NEW."state",
+            NEW."confirmed",
+            NEW."groupId",
+            NEW."locale",
+            NEW."userId";
 
     RETURN NEW;
 
