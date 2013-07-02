@@ -469,7 +469,7 @@ BEGIN
                 'SELECT COUNT( * ) = 0
                    FROM %I."user"
                   WHERE "id" = $1',
-                "vSchema"
+                "v_schema"
             )
        INTO "v_not_exists"
       USING NEW."userId";
@@ -484,7 +484,7 @@ BEGIN
                                            FROM "_central"."user"
                                           WHERE "user"."id" = $1 ),
                                    $2, $3, $4, $5, $6, $7 )',
-                    "vSchema"
+                    "v_schema"
                 )
           USING NEW."userId",
                 NEW."displayName",
