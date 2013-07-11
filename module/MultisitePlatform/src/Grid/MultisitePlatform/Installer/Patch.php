@@ -31,13 +31,32 @@ class Patch extends AbstractPatch
     {
         if ( $this->isZeroVersion( $from ) )
         {
-            $this->insertIntoTable(
-                'module',
-                array(
-                    'module'    => 'Grid\\MultisiteCentral',
-                    'enabled'   => 't',
-                )
-            );
+            $enabled = $this->selectFromTable( 'module', 'enabled', array(
+                'module' => 'Grid\\MultisiteCentral',
+            ) );
+
+            if ( null === $enabled )
+            {
+                $this->insertIntoTable(
+                    'module',
+                    array(
+                        'module'    => 'Grid\\MultisiteCentral',
+                        'enabled'   => 't',
+                    )
+                );
+            }
+            else if ( $enabled === 'f' || ! $enabled )
+            {
+                $this->updateTable(
+                    'module',
+                    array(
+                        'enabled'   => 't',
+                    ),
+                    array(
+                        'module'    => 'Grid\\MultisiteCentral',
+                    )
+                );
+            }
 
             $platformOwner = $this->selectFromTable( 'user', 'id', array(
                 'groupId' => static::SITE_OWNER_GROUP,
