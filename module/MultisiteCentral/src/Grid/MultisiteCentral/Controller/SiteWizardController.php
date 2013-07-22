@@ -142,13 +142,53 @@ class SiteWizardController extends AbstractWizardController
     }
 
     /**
+     * Site wizard is allowed
+     *
+     * @return  bool
+     */
+    protected function isAllowed()
+    {
+        $auth           = new AuthenticationService;
+        $serviceLocator = $this->getServiceLocator();
+        $config         = $serviceLocator->get( 'Config' );
+        $permissions    = $serviceLocator->get( 'Grid\User\Model\Permissions\Model' );
+        $registration   = ! empty( $config[ 'modules'               ]
+                                          [ 'Grid\User'             ]
+                                          [ 'features'              ]
+                                          [ 'registrationEnabled'   ] );
+
+        if ( $auth->hasIdentity() )
+        {
+            if ( ! $permissions->isAllowed( 'central.site', 'create' ) )
+            {
+                return false;
+            }
+        }
+        else if ( $registration )
+        {
+            $groupModel     = $serviceLocator->get( 'Grid\User\Model\User\Group\Model' );
+            $defaultGroup   = $groupModel->findDefault();
+
+            if ( empty( $defaultGroup ) ||
+                 ! $permissions->isAllowed( 'central.site', 'create', $defaultGroup ) )
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
      * Step action
      */
     public function stepAction()
     {
-        if ( ! $this->getServiceLocator()
-                    ->get( 'Grid\User\Model\Permissions\Model' )
-                    ->isAllowed( 'central.site', 'create' ) )
+        if ( ! $this->isAllowed() )
         {
             $this->getResponse()
                  ->setStatusCode( 403 );
