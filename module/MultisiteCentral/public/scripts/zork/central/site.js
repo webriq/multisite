@@ -50,14 +50,13 @@
                             "message": cancel.text()
                         } );
                     },
-                    "finish": function ( finish ) {
+                    "finish": function ( finish, close ) {
                         finish = $( finish );
 
-                        message( {
-                            "title": finish.attr( "title" ),
-                            "message": finish.html(),
-                            "important": true
-                        } );
+                        finish.find( "a, button, input[type=button]" )
+                              .on( "click", close );
+
+                        return false;
                     }
                 } );
             } );
