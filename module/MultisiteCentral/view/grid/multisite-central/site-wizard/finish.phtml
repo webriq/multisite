@@ -8,19 +8,19 @@
         </ul>
         <div class="step-action step-action-finish">
         <?php if ( ! empty( $this->error ) ): ?>
-            <div data-js-type="zork.wizard.cancel">
+            <p class="wizard-message" data-js-type="zork.wizard.cancel">
                 <?= $this->translate( 'central.site.create.error', 'central' ) ?>
                 <?php if ( ! empty( $this->message ) ): ?>
                     <?= $this->translate( $this->message, 'central' ) ?>
                 <?php endif ?>
 
-            </div>
+            </p>
         <?php else: ?>
 
-            <div data-js-type="zork.wizard.finish">
+            <p class="wizard-message" data-js-type="zork.wizard.finish">
                 <?= sprintf( $this->translate( 'central.site.create.finish', 'central' ),
                              $this->url, $this->domain ) ?>
-            </div>
+            </p>
         <?php endif ?>
 
         </div>
