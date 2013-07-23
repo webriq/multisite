@@ -240,7 +240,7 @@ class SiteWizardController extends AbstractWizardController
                 'displayName'   => $userData['displayName'],
                 'password'      => $userData['password'],
                 'locale'        => (string) $this->locale(),
-                'confirmed'     => true,
+                'confirmed'     => false,
             ) );
 
             if ( empty( $user ) )
@@ -252,7 +252,14 @@ class SiteWizardController extends AbstractWizardController
             }
             else
             {
-                $userId = $user->id;
+                $userId  = $user->id;
+                $confirm = $this->url()
+                                ->fromRoute( 'Grid\User\Manage\Confirm', array(
+                                    'locale' => (string) $this->locale(),
+                                    'hash'   => $this->getServiceLocator()
+                                                     ->get( 'Grid\User\Model\ConfirmHash' )
+                                                     ->create( $user->email ),
+                                ) );
 
                 $this->getServiceLocator()
                      ->get( 'Grid\Mail\Model\Template\Sender' )
@@ -263,7 +270,7 @@ class SiteWizardController extends AbstractWizardController
                      ->send( array(
                          'email'        => $user->email,
                          'display_name' => $user->displayName,
-                         'confirm_url'  => '',
+                         'confirm_url'  => $confirm,
                      ), array(
                          $user->email   => $user->displayName,
                      ) );
