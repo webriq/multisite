@@ -111,15 +111,10 @@ class SiteWizardController extends AbstractWizardController
                     {
                         $this->unsetStepStack();
 
-                        foreach ( $data->get( $hash ) as $step => $values )
+                        foreach ( $data->get( $hash ) as $stepName => $values )
                         {
-                            $this->pushStepStack( $step );
-                            $store = $this->getStepStore( $step );
-
-                            foreach ( $values as $name => $value )
-                            {
-                                $store[$name] = $value;
-                            }
+                            $this->pushStepStack( $stepName );
+                            $this->setStepStore( $stepName, $values );
                         }
 
                         $data->delete( $hash );
