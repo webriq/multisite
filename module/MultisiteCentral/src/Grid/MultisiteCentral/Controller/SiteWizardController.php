@@ -24,8 +24,8 @@ class SiteWizardController extends AbstractWizardController
     /**
      * Get step model
      *
-     * @param string $step
-     * @return \Core\View\Model\WizardStep
+     * @param   string $step
+     * @return  \Core\View\Model\WizardStep
      */
     protected function getStep( $step )
     {
@@ -88,14 +88,42 @@ class SiteWizardController extends AbstractWizardController
 
             case 'settings':
 
+                $auth = new AuthenticationService;
                 $model->setOptions( array(
                     'finish'    => true,
-                    'next'      => 'check',
+                    'next'      => $auth->hasIdentity() ? 'check' : 'finish',
                 ) );
 
                 break;
 
             case 'check':
+
+                $hash = $this->params()
+                             ->fromQuery( 'hash' );
+
+                if ( ! empty( $hash ) )
+                {
+                    $data = $this->getServiceLocator()
+                                 ->get( 'Grid\MultisiteCentral\Model\SiteWizardData' );
+
+                    if ( $data->has( $hash ) )
+                    {
+                        $this->unsetStepStack();
+
+                        foreach ( $data->get( $hash ) as $step => $values )
+                        {
+                            $this->pushStepStack( $step );
+                            $store = $this->getStepStore( $step );
+
+                            foreach ( $values as $name => $value )
+                            {
+                                $store[$name] = $value;
+                            }
+                        }
+
+                        $data->delete( $hash );
+                    }
+                }
 
                 $postfix = $this->getServiceLocator()
                                 ->get( 'Config' )
@@ -126,16 +154,15 @@ class SiteWizardController extends AbstractWizardController
         }
         else
         {
-
             $model->setDescriptionPartial(
-                        'grid/multisite-central/site-wizard/description'
-                    )
+                      'grid/multisite-central/site-wizard/description'
+                  )
                   ->setStepForm(
-                        $this->getServiceLocator()
-                             ->get( 'Form' )
-                             ->get( 'Grid\MultisiteCentral\\SiteWizard\\' .
-                                    ucfirst( $step ) )
-                    );
+                      $this->getServiceLocator()
+                           ->get( 'Form' )
+                           ->get( 'Grid\\MultisiteCentral\\SiteWizard\\' .
+                                  ucfirst( $step ) )
+                  );
         }
 
         return $model;
@@ -253,13 +280,23 @@ class SiteWizardController extends AbstractWizardController
             else
             {
                 $userId  = $user->id;
+                $hash    = $this->getServiceLocator()
+                                ->get( 'Grid\User\Model\ConfirmHash' )
+                                ->create( $user->email );
                 $confirm = $this->url()
-                                ->fromRoute( 'Grid\User\Manage\Confirm', array(
+                                ->fromRoute( 'Grid\MultisiteCentral\SiteWizard\Confirm', array(
                                     'locale' => (string) $this->locale(),
-                                    'hash'   => $this->getServiceLocator()
-                                                     ->get( 'Grid\User\Model\ConfirmHash' )
-                                                     ->create( $user->email ),
+                                    'hash'   => $hash,
                                 ) );
+
+                $this->getServiceLocator()
+                     ->get( 'Grid\MultisiteCentral\Model\SiteWizardData' )
+                     ->save( $hash, array(
+                         'start'    => $startData,
+                         'layout'   => $layoutData,
+                         'content'  => $contentData,
+                         'settings' => $settingsData,
+                     ) );
 
                 $this->getServiceLocator()
                      ->get( 'Grid\Mail\Model\Template\Sender' )
@@ -274,6 +311,10 @@ class SiteWizardController extends AbstractWizardController
                      ), array(
                          $user->email   => $user->displayName,
                      ) );
+
+                return array(
+                    'user' => $user,
+                );
             }
         }
 
@@ -518,12 +559,49 @@ class SiteWizardController extends AbstractWizardController
         // view settings
 
         return array(
+            'site'      => $site,
             'domain'    => $domainName,
             'url'       => $this->url()
                                 ->fromRoute( 'Grid\MultisitePlatform\AutoLogin\ByDomain', array(
                                     'locale'    => (string) $this->locale(),
                                     'domain'    => $domainName,
                                 ) ),
+        );
+    }
+
+    /**
+     * Confirm new user action
+     */
+    public function confirmAction()
+    {
+        $this->paragraphLayout();
+        $success    = false;
+        $service    = $this->getServiceLocator();
+        $userModel  = $service->get( 'Grid\User\Model\User\Model' );
+        $confirm    = $service->get( 'Grid\User\Model\ConfirmHash' );
+        $hash       = $this->params()
+                           ->fromRoute( 'hash' );
+
+        if ( $confirm->has( $hash ) &&
+             ( $email = $confirm->find( $hash ) ) )
+        {
+            $user = $userModel->findByEmail( $email );
+
+            if ( ! empty( $user ) )
+            {
+                $user->confirmed = true;
+
+                if ( $user->save() )
+                {
+                    $confirm->delete( $hash );
+                    $success = true;
+                }
+            }
+        }
+
+        return array(
+            'success'   => true,
+            'hash'      => $hash,
         );
     }
 

@@ -11,15 +11,29 @@
             <p class="wizard-message" data-js-type="zork.wizard.cancel">
                 <?= $this->translate( 'central.site.create.error', 'central' ) ?>
                 <?php if ( ! empty( $this->message ) ): ?>
+
+                    <br />
                     <?= $this->translate( $this->message, 'central' ) ?>
                 <?php endif ?>
 
             </p>
-        <?php else: ?>
+        <?php elseif ( $this->user ): ?>
 
             <p class="wizard-message" data-js-type="zork.wizard.finish">
-                <?= sprintf( $this->translate( 'central.site.create.finish', 'central' ),
+                <?= sprintf( $this->translate( 'central.site.create.userCreated.%s.%s', 'central' ),
+                             $this->user->displayName, $this->user->email ) ?>
+            </p>
+        <?php elseif ( $this->site ): ?>
+
+            <p class="wizard-message" data-js-type="zork.wizard.finish">
+                <?= sprintf( $this->translate( 'central.site.create.siteCreated.%s.%s', 'central' ),
                              $this->url, $this->domain ) ?>
+            </p>
+        <?php else: ?>
+
+            <p class="wizard-message" data-js-type="zork.wizard.cancel">
+                <?= $this->translate( 'central.site.create.error', 'central' ) ?>
+
             </p>
         <?php endif ?>
 

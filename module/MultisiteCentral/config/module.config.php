@@ -33,6 +33,16 @@ return array(
                     ),
                 ),
             ),
+            'Grid\MultisiteCentral\SiteWizard\Confirm' => array(
+                'type'      => 'Zend\Mvc\Router\Http\Segment',
+                'options'   => array(
+                    'route'     => '/app/:locale/central/site-wizard/confirm/:hash',
+                    'defaults'  => array(
+                        'controller'    => 'Grid\MultisiteCentral\Controller\SiteWizard',
+                        'action'        => 'confirm',
+                    ),
+                ),
+            ),
             'Grid\MultisiteCentral\SiteWizard\Step' => array(
                 'type'      => 'Zend\Mvc\Router\Http\Segment',
                 'options'   => array(

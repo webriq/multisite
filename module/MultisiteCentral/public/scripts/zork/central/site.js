@@ -29,6 +29,12 @@
 
     global.Zork.Central.prototype.site = new global.Zork.Central.Site();
 
+    /**
+     * Site create wizard
+     *
+     * @param {$|HTMLElement} element
+     * @memberOf Zork.Central.Site
+     */
     global.Zork.Central.Site.prototype.create = function ( element )
     {
         element     = $( element );
@@ -64,5 +70,41 @@
     };
 
     global.Zork.Central.Site.prototype.create.isElementConstructor = true;
+
+    /**
+     * Site create wizard continue
+     *
+     * @param {$|HTMLElement} element
+     * @memberOf Zork.Central.Site
+     */
+    global.Zork.Central.Site.prototype.confirmed = function ( element )
+    {
+        element = $( element );
+        var url = element.attr( "href" );
+
+        if ( url ) {
+            wizard( {
+                "url"   : url,
+                "cancel": function ( cancel ) {
+                    cancel = $( cancel );
+
+                    message( {
+                        "title": cancel.attr( "title" ),
+                        "message": cancel.text()
+                    } );
+                },
+                "finish": function ( finish, close ) {
+                    finish = $( finish );
+
+                    finish.find( "a, button, input[type=button]" )
+                          .on( "click", close );
+
+                    return false;
+                }
+            } );
+        }
+    };
+
+    global.Zork.Central.Site.prototype.confirmed.isElementConstructor = true;
 
 } ( window, jQuery, zork ) );
