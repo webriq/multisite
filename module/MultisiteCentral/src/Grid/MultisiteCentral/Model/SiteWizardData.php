@@ -22,7 +22,7 @@ class SiteWizardData extends AbstractCacheStorage
     public function save( $hash, $data )
     {
         $store = $this->getCacheStorage();
-        $store->setItem( $hash, $data );
+        $store->setItem( $hash, serialize( $data ) );
         return $this;
     }
 
@@ -46,8 +46,10 @@ class SiteWizardData extends AbstractCacheStorage
      */
     public function get( $hash )
     {
-        return $this->getCacheStorage()
-                    ->getItem( $hash );
+        return unserialize(
+            $this->getCacheStorage()
+                 ->getItem( $hash )
+        );
     }
 
     /**
