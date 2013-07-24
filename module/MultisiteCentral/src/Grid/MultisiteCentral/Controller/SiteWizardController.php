@@ -5,8 +5,8 @@ namespace Grid\MultisiteCentral\Controller;
 use Zend\Form\Form;
 use Grid\Core\View\Model\WizardStep;
 use Zend\Mvc\Exception\RuntimeException;
-use Grid\Core\Controller\AbstractWizardController;
 use Zend\Authentication\AuthenticationService;
+use Grid\Core\Controller\AbstractWizardController;
 
 /**
  * SiteWizardController
@@ -576,31 +576,43 @@ class SiteWizardController extends AbstractWizardController
     {
         $this->paragraphLayout();
         $success    = false;
-        $service    = $this->getServiceLocator();
-        $userModel  = $service->get( 'Grid\User\Model\User\Model' );
-        $confirm    = $service->get( 'Grid\User\Model\ConfirmHash' );
         $hash       = $this->params()
                            ->fromRoute( 'hash' );
+        $result     = $this->getServiceLocator()
+                           ->get( 'Grid\User\Authentication\Service' )
+                           ->login( array( 'hash' => $hash ),
+                                     $this->getSessionManager(),
+                                     new AuthenticationService );
 
-        if ( $confirm->has( $hash ) &&
-             ( $email = $confirm->find( $hash ) ) )
+        /* @var $logger \Zork\Log\LoggerManager */
+        $logger = $this->getServiceLocator()
+                       ->get( 'Zork\Log\LoggerManager' );
+
+        if ( $result->isValid() )
         {
-            $user = $userModel->findByEmail( $email );
+            $success = true;
 
-            if ( ! empty( $user ) )
+            if ( $logger->hasLogger( 'application' ) )
             {
-                $user->confirmed = true;
-
-                if ( $user->save() )
-                {
-                    $confirm->delete( $hash );
-                    $success = true;
-                }
+                $logger->getLogger( 'application' )
+                       ->notice( 'user-login', array(
+                           'successful' => true,
+                       ) );
+            }
+        }
+        else
+        {
+            if ( $logger->hasLogger( 'application' ) )
+            {
+                $logger->getLogger( 'application' )
+                       ->warn( 'user-login', array(
+                           'successful' => false,
+                       ) );
             }
         }
 
         return array(
-            'success'   => true,
+            'success'   => $success,
             'hash'      => $hash,
         );
     }

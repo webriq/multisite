@@ -102,6 +102,8 @@
                     return false;
                 }
             } );
+
+            element.remove();
         }
     };
 
