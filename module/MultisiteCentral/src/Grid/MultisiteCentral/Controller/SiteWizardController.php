@@ -3,6 +3,7 @@
 namespace Grid\MultisiteCentral\Controller;
 
 use Zend\Form\Form;
+use Zork\Stdlib\Message;
 use Grid\Core\View\Model\WizardStep;
 use Zend\Mvc\Exception\RuntimeException;
 use Zend\Authentication\AuthenticationService;
