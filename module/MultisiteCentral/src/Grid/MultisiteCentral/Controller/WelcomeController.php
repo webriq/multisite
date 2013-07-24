@@ -20,13 +20,10 @@ class WelcomeController extends AbstractActionController
     {
         $this->paragraphLayout();
         $auth       = new AuthenticationService;
-        $controller = preg_replace( '/Controller$/', '', __CLASS__ );
+        $controller = preg_replace( '/Controller$/', '', get_class( $this ) );
 
         if ( ! $auth->hasIdentity() )
         {
-         /* $this->getResponse()
-                 ->setStatusCode( 403 ); */
-
             return $this->redirect()
                         ->toUrl( '/' );
         }
@@ -42,6 +39,25 @@ class WelcomeController extends AbstractActionController
                                 'locale' => (string) $this->locale(),
                                 'action' => 'site-wizard',
                             ) );
+
+            $continue = $this->params()
+                             ->fromQuery( 'continue' );
+
+            if ( $continue )
+            {
+                $data = $this->getServiceLocator()
+                             ->get( 'Grid\MultisiteCentral\Model\SiteWizardData' );
+
+                if ( $data->has( $continue ) )
+                {
+                    $parts[] = $this->forward()
+                                    ->dispatch( $controller, array(
+                                        'locale' => (string) $this->locale(),
+                                        'action' => 'continue',
+                                        'hash'   => $continue,
+                                    ) );
+                }
+            }
         }
 
         $parts[] = $this->forward()
@@ -96,6 +112,17 @@ class WelcomeController extends AbstractActionController
 
         return array(
             'form' => $form,
+        );
+    }
+
+    /**
+     * Continue (site-creation) action
+     */
+    public function continueAction()
+    {
+        return array(
+            'hash' => $this->params()
+                           ->fromRoute( 'hash' )
         );
     }
 

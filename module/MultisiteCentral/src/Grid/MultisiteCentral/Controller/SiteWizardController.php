@@ -574,8 +574,6 @@ class SiteWizardController extends AbstractWizardController
      */
     public function confirmAction()
     {
-        $this->paragraphLayout();
-        $success    = false;
         $hash       = $this->params()
                            ->fromRoute( 'hash' );
         $result     = $this->getServiceLocator()
@@ -590,7 +588,9 @@ class SiteWizardController extends AbstractWizardController
 
         if ( $result->isValid() )
         {
-            $success = true;
+            $this->messenger()
+                 ->add( 'user.action.confirm.success',
+                        'user', Message::LEVEL_INFO );
 
             if ( $logger->hasLogger( 'application' ) )
             {
@@ -599,9 +599,22 @@ class SiteWizardController extends AbstractWizardController
                            'successful' => true,
                        ) );
             }
+
+            return $this->redirect()
+                        ->toRoute( 'Grid\MultisiteCentral\Welcome\Index', array(
+                            'locale' => (string) $this->locale(),
+                        ), array(
+                            'query'  => array(
+                                'continue' => $hash,
+                            ),
+                        ) );
         }
         else
         {
+            $this->messenger()
+                 ->add( 'user.action.confirm.failed',
+                        'user', Message::LEVEL_ERROR );
+
             if ( $logger->hasLogger( 'application' ) )
             {
                 $logger->getLogger( 'application' )
@@ -611,10 +624,21 @@ class SiteWizardController extends AbstractWizardController
             }
         }
 
-        return array(
-            'success'   => $success,
-            'hash'      => $hash,
-        );
+        $messages  = $result->getMessages();
+        $returnUri = empty( $messages['returnUri'] )
+                    ? '/' : $messages['returnUri'];
+
+        foreach ( $messages as $index => $message )
+        {
+            if ( is_int( $index ) && is_string( $message ) )
+            {
+                $this->messenger()
+                     ->add( $message, false, Message::LEVEL_WARN );
+            }
+        }
+
+        return $this->redirect()
+                    ->toUrl( $returnUri );
     }
 
 }
