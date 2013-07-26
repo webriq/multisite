@@ -60,7 +60,14 @@
                         finish = $( finish );
 
                         finish.find( "a, button, input[type=button]" )
-                              .on( "click", close );
+                              .on( "click", function () {
+                                  close();
+
+                                  if ( $( ".paragraph-like.MultisiteCentral.siteList" ).length )
+                                  {
+                                      global.location.reload( true );
+                                  }
+                              } );
 
                         return false;
                     }
@@ -97,7 +104,14 @@
                     finish = $( finish );
 
                     finish.find( "a, button, input[type=button]" )
-                          .on( "click", close );
+                          .on( "click", function () {
+                              close();
+
+                              if ( $( ".paragraph-like.MultisiteCentral.siteList" ).length )
+                              {
+                                  global.location.reload( true );
+                              }
+                          } );
 
                     return false;
                 }
