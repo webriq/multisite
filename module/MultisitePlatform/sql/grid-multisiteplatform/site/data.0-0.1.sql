@@ -1,3 +1,8 @@
+-- insert default values for table: module
+
+INSERT INTO "module" ( "module", "enabled" )
+     VALUES ( 'Grid\DomainManager', TRUE );
+
 -- insert default values for table: user_right
 
 DO LANGUAGE plpgsql $$
