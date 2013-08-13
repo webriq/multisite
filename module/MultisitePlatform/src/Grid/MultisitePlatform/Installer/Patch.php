@@ -18,6 +18,11 @@ class Patch extends AbstractPatch
     /**
      * @const int
      */
+    const DEVELOPER_GROUP = 1;
+
+    /**
+     * @const int
+     */
     const SITE_OWNER_GROUP = 2;
 
     /**
@@ -54,6 +59,23 @@ class Patch extends AbstractPatch
                     ),
                     array(
                         'module'    => 'Grid\\MultisiteCentral',
+                    )
+                );
+            }
+
+            $developer = $this->selectFromTable( 'user', 'id', array(
+                'groupId' => static::DEVELOPER_GROUP,
+            ) );
+
+            if ( $developer )
+            {
+                $this->query(
+                    'INSERT INTO "_central"."user_unified" ( "siteId", "userId" )
+                          SELECT "id"        AS "siteId",
+                                 :developer  AS "userId"
+                            FROM "_central"."site"',
+                    array(
+                        'developer' => $developer,
                     )
                 );
             }
