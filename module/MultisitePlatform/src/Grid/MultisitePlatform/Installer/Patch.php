@@ -81,7 +81,7 @@ class Patch extends AbstractPatch
                     ALTER TABLE "_template"."user"
                          ENABLE TRIGGER USER;
 
-                    SELECT nextval( \'_template.user_id_seq\' );
+                    SELECT setval( \'"_template"."user_id_seq"\', :developer );
 
                     INSERT INTO "_central"."user_unified" ( "siteId", "userId" )
                          SELECT "id"        AS "siteId",
