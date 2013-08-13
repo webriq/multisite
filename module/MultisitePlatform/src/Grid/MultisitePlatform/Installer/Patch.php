@@ -69,29 +69,27 @@ class Patch extends AbstractPatch
 
             if ( $developer )
             {
-                $this->query( '
-                    ALTER TABLE "_template"."user"
-                        DISABLE TRIGGER USER;
+                $this->query( 'ALTER TABLE "_template"."user"
+                                   DISABLE TRIGGER USER' );
 
-                    INSERT INTO "_template"."user"
-                         SELECT *
-                           FROM "user"
-                          WHERE "id" = :developer;
+                $this->query( 'INSERT INTO "_template"."user"
+                                    SELECT *
+                                      FROM "user"
+                                     WHERE "id" = :developer',
+                              array( 'developer' => $developer ) );
 
-                    ALTER TABLE "_template"."user"
-                         ENABLE TRIGGER USER;
+                $this->query( 'ALTER TABLE "_template"."user"
+                                    ENABLE TRIGGER USER' );
 
-                    SELECT setval( \'"_template"."user_id_seq"\', :developer );
+                $this->query( 'SELECT setval( :sequence, :developer )',
+                              array( 'sequence'  => '"_template"."user_id_seq"',
+                                     'developer' => $developer ) );
 
-                    INSERT INTO "_central"."user_unified" ( "siteId", "userId" )
-                         SELECT "id"        AS "siteId",
-                                :developer  AS "userId"
-                           FROM "_central"."site";
-                    ',
-                    array(
-                        'developer' => $developer,
-                    )
-                );
+                $this->query( 'INSERT INTO "_central"."user_unified" ( "siteId", "userId" )
+                                    SELECT "id"         AS "siteId",
+                                           :developer   AS "userId"
+                                      FROM "_central"."site"',
+                              array( 'developer' => $developer ) );
             }
 
             $platformOwner = $this->selectFromTable( 'user', 'id', array(
