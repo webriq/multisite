@@ -69,11 +69,25 @@ class Patch extends AbstractPatch
 
             if ( $developer )
             {
-                $this->query(
-                    'INSERT INTO "_central"."user_unified" ( "siteId", "userId" )
-                          SELECT "id"        AS "siteId",
-                                 :developer  AS "userId"
-                            FROM "_central"."site"',
+                $this->query( '
+                    ALTER TABLE "_template"."user"
+                        DISABLE TRIGGER USER;
+
+                    INSERT INTO "_template"."user"
+                         SELECT *
+                           FROM "user"
+                          WHERE "id" = :developer;
+
+                    ALTER TABLE "_template"."user"
+                         ENABLE TRIGGER USER;
+
+                    SELECT nextval( \'_template.user_id_seq\' );
+
+                    INSERT INTO "_central"."user_unified" ( "siteId", "userId" )
+                         SELECT "id"        AS "siteId",
+                                :developer  AS "userId"
+                           FROM "_central"."site";
+                    ',
                     array(
                         'developer' => $developer,
                     )
