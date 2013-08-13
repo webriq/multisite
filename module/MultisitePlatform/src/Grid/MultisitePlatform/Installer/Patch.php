@@ -63,35 +63,6 @@ class Patch extends AbstractPatch
                 );
             }
 
-            $developer = $this->selectFromTable( 'user', 'id', array(
-                'groupId' => static::DEVELOPER_GROUP,
-            ) );
-
-            if ( $developer )
-            {
-                $this->query( 'ALTER TABLE "_template"."user"
-                                   DISABLE TRIGGER USER' );
-
-                $this->query( 'INSERT INTO "_template"."user"
-                                    SELECT *
-                                      FROM "user"
-                                     WHERE "id" = :developer',
-                              array( 'developer' => $developer ) );
-
-                $this->query( 'ALTER TABLE "_template"."user"
-                                    ENABLE TRIGGER USER' );
-
-                $this->query( 'SELECT setval( :sequence, :developer )',
-                              array( 'sequence'  => '"_template"."user_id_seq"',
-                                     'developer' => $developer ) );
-
-                $this->query( 'INSERT INTO "_central"."user_unified" ( "siteId", "userId" )
-                                    SELECT "id"         AS "siteId",
-                                           :developer   AS "userId"
-                                      FROM "_central"."site"',
-                              array( 'developer' => $developer ) );
-            }
-
             $platformOwner = $this->selectFromTable( 'user', 'id', array(
                 'groupId' => static::SITE_OWNER_GROUP,
             ) );
@@ -124,6 +95,35 @@ class Patch extends AbstractPatch
 
             $this->getInstaller()
                  ->convertToMultisite();
+
+            $developer = $this->selectFromTable( 'user', 'id', array(
+                'groupId' => static::DEVELOPER_GROUP,
+            ) );
+
+            if ( $developer )
+            {
+                $this->query( 'ALTER TABLE "_template"."user"
+                                   DISABLE TRIGGER USER' );
+
+                $this->query( 'INSERT INTO "_template"."user"
+                                    SELECT *
+                                      FROM "user"
+                                     WHERE "id" = :developer',
+                              array( 'developer' => $developer ) );
+
+                $this->query( 'ALTER TABLE "_template"."user"
+                                    ENABLE TRIGGER USER' );
+
+                $this->query( 'SELECT setval( :sequence, :developer )',
+                              array( 'sequence'  => '"_template"."user_id_seq"',
+                                     'developer' => $developer ) );
+
+                $this->query( 'INSERT INTO "_central"."user_unified" ( "siteId", "userId" )
+                                    SELECT "id"         AS "siteId",
+                                           :developer   AS "userId"
+                                      FROM "_central"."site"',
+                              array( 'developer' => $developer ) );
+            }
 
             $this->setupConfigs( $domain );
         }
