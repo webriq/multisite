@@ -47,6 +47,9 @@
     "extra": {
         "patch-classes": {
             "Grid\\MultisitePlatform\\Installer\\Patch": "module/MultisitePlatform/src/Grid/MultisitePlatform/Installer/Patch.php"
+        },
+        "modules": {
+            "Grid\\DomainManager": "Domain manager"
         }
     }
 }
