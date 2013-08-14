@@ -111,7 +111,7 @@ return array(
                         ),
                     ),
                 ),
-             /* 'system'    => array(
+             /* 'sysadmin'  => array(
                     'pages' => array(
                         'gitLog'    => array(
                             'label'         => 'admin.navTop.system.gitLog',
