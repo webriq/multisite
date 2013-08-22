@@ -45,6 +45,12 @@
         ]
     },
     "extra": {
+        "display-name": {
+            "en": "Multisite Package"
+        },
+        "display-description": {
+            "en": "This package allows you to create multiple websites instead of just one. It is ideal for those who want to operate several websites on one server.\nUpon installation, your current website will be your central site. In order to be able to operate multiple websites you will need two domains. One domain for your central site and a second domain where all the others will be created with the following pattern: sitename.theseconddomain.com"
+        },
         "patch-classes": {
             "Grid\\MultisitePlatform\\Installer\\Patch": "module/MultisitePlatform/src/Grid/MultisitePlatform/Installer/Patch.php"
         },
