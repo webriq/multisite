@@ -137,7 +137,7 @@ CREATE TABLE "_central"."subdomain"
 CREATE TABLE "_central"."domain"
 (
     "id"        SERIAL              NOT NULL,
-    "domain"    CHARACTER VARYING   NOT NULL,
+    "domain"    "_common"."domain"  NOT NULL,
     "siteId"    INTEGER             NOT NULL,
 
     PRIMARY KEY ( "id" ),
@@ -145,7 +145,9 @@ CREATE TABLE "_central"."domain"
     FOREIGN KEY ( "siteId" )
      REFERENCES "_central"."site" ( "id" )
       ON UPDATE CASCADE
-      ON DELETE CASCADE
+      ON DELETE CASCADE,
+    CONSTRAINT "domain_domain_overlaps"
+       EXCLUDE USING btree ( "domain" "_common"."domain_ops" WITH OPERATOR( "_common".&& ) )
 );
 
 --------------------------------------------------------------------------------
