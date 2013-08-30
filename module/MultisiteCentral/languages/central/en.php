@@ -42,6 +42,7 @@ return array(
     'central.site.list.column.domains.title' => 'Domains',
     'central.site.list.column.ownerEmail.title' => 'Owner email',
     'central.site.list.column.created.title' => 'Created',
+    'central.site.list.column.actions.title' => 'Actions',
     'central.site.list.title' => 'Site list',
     'central.site.noData' => 'No sites',
     'central.site.resourceGroup' => 'Site creation wizard',

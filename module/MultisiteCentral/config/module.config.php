@@ -33,6 +33,16 @@ return array(
                     ),
                 ),
             ),
+            'Grid\MultisiteCentral\SiteAdmin\Delete' => array(
+                'type'      => 'Zend\Mvc\Router\Http\Segment',
+                'options'   => array(
+                    'route'     => '/app/:locale/admin/central/delete-site/:id',
+                    'defaults'  => array(
+                        'controller' => 'Grid\MultisiteCentral\Controller\SiteAdmin',
+                        'action'     => 'delete',
+                    ),
+                ),
+            ),
             'Grid\MultisiteCentral\SiteWizard\Confirm' => array(
                 'type'      => 'Zend\Mvc\Router\Http\Segment',
                 'options'   => array(

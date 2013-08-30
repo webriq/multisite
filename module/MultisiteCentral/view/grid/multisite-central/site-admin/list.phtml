@@ -30,5 +30,20 @@ if ( ! $this->format ): ?>
               },
               'ownerEmail'      => $rowSet::STRING,
               'created'         => $rowSet::DATETIME,
+              'actions'         => function ( $row ) use ( $view ) {
+                $view->placeholder( 'listActions' )->set( '' );
+                $view->placeholder( 'listActions' )->captureStart();
+?>
+<?php if ( $this->isAllowed( 'central.site', 'delete' ) ): ?>
+    <a class="action-button delete"
+       title="<?= $view->translate( 'default.delete' ); ?>"
+       href="/app/<?= $view->locale() ?>/admin/central/delete-site/<?= $row->id ?>"
+       onclick="return js.require('js.ui.dialog').confirm(this);">
+    </a>
+<?php endif ?>
+<?php
+                $view->placeholder( 'listActions' )->captureEnd();
+                return (string) $view->placeholder( 'listActions' );
+              },
           ) )
          ->render( $this->format );
