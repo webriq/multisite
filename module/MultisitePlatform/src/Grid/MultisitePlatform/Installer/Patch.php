@@ -102,27 +102,34 @@ class Patch extends AbstractPatch
 
             if ( $developer )
             {
-                $this->query( 'ALTER TABLE "_template"."user"
-                                   DISABLE TRIGGER USER' );
+                $exists = $this->selectFromTable( array( '_template', 'user' ), 'id', array(
+                    'id' => $developer,
+                ) );
 
-                $this->query( 'INSERT INTO "_template"."user"
-                                    SELECT *
-                                      FROM "user"
-                                     WHERE "id" = :developer',
-                              array( 'developer' => $developer ) );
+                if ( ! $exists )
+                {
+                    $this->query( 'ALTER TABLE "_template"."user"
+                                       DISABLE TRIGGER USER' );
 
-                $this->query( 'ALTER TABLE "_template"."user"
-                                    ENABLE TRIGGER USER' );
+                    $this->query( 'INSERT INTO "_template"."user"
+                                        SELECT *
+                                          FROM "user"
+                                         WHERE "id" = :developer',
+                                  array( 'developer' => $developer ) );
 
-                $this->query( 'SELECT setval( :sequence, :developer )',
-                              array( 'sequence'  => '"_template"."user_id_seq"',
-                                     'developer' => $developer ) );
+                    $this->query( 'ALTER TABLE "_template"."user"
+                                        ENABLE TRIGGER USER' );
 
-                $this->query( 'INSERT INTO "_central"."user_unified" ( "siteId", "userId" )
-                                    SELECT "id"         AS "siteId",
-                                           :developer   AS "userId"
-                                      FROM "_central"."site"',
-                              array( 'developer' => $developer ) );
+                    $this->query( 'SELECT setval( :sequence, :developer )',
+                                  array( 'sequence'  => '"_template"."user_id_seq"',
+                                         'developer' => $developer ) );
+
+                    $this->query( 'INSERT INTO "_central"."user_unified" ( "siteId", "userId" )
+                                        SELECT "id"         AS "siteId",
+                                               :developer   AS "userId"
+                                          FROM "_central"."site"',
+                                  array( 'developer' => $developer ) );
+                }
             }
 
             $this->setupConfigs( $domain );
