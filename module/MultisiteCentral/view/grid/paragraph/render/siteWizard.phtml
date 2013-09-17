@@ -1,6 +1,9 @@
 <?= $this->render( 'grid/multisite-central/site-wizard/content', array(
     'form' => $this->paragraph->getForm( $this->url(
         'Grid\MultisiteCentral\SiteWizard\Step',
-        array( 'locale' => (string) $this->locale() )
+        array(
+            'step'      => 'start',
+            'locale'    => (string) $this->locale(),
+        )
     ) ),
 ) ) ?>
