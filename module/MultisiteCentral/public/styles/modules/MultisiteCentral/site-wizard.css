@@ -24,7 +24,7 @@
 .wizard .step-action.step-action-start form dd input[type="text"]
 {
     float: left;
-    margin-top: -1em;
+    margin-top: 0em;
     margin-bottom: 1em;
 }
 
