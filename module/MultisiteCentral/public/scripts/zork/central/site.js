@@ -44,6 +44,19 @@
             form.find( ":input[name='cancel']" )
                 .remove();
 
+            form.find( ":submit" ).click( function ( event ) {
+                var target = $( event.target );
+
+                if ( target ) {
+                    form.prepend(
+                        $( '<input type="hidden" />' ).attr( {
+                            "name": target.attr( "name" ),
+                            "value": target.val() || "1"
+                        } )
+                    );
+                }
+            } );
+
             form.submit( function () {
                 wizard( {
                     "url"   : form.attr( "action" ),
