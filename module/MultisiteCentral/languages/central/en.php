@@ -49,5 +49,5 @@ return array(
     'central.site.resource' => 'Sites',
     'central.site.privilege.create' => 'Create a site',
     'central.site.privilege.view' => 'View sites',
-    'central.welcome' => 'Welcome!',
+    'central.welcome' => 'Welcome',
 );
