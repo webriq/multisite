@@ -32,5 +32,5 @@ return array(
     'central.site.create.userCreated.%s.%s' => 'Felhasználó <b>%s</b> sikeresen létrejött.<br /> Kérem ellenőrizze az email-jeit <b>%s</b>, hogy visszaigazolja érvényességét.',
     'central.site.list.title' => 'Site lista',
     'central.site.noData' => 'Nincs site',
-    'central.welcome' => 'Köszöntjük!',
+    'central.welcome' => 'Köszöntjük',
 );
