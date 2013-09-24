@@ -1,5 +1,7 @@
+<?php $this->headTitle( $this->translate( 'central.welcome', 'central' ) ); ?>
 <p class="info">
-    <a href="/app/<?= $this->locale() ?>/central/site-wizard/check?hash=<?= $this->escapeHtmlAttr( $this->hash ) ?>"
+    <a href="/app/<?= $this->locale() ?>/central/site-wizard/check?hash=<?=
+       $this->escapeHtmlAttr( $this->hash ) ?>"
        target="_blank" data-js-type="js.central.site.confirmed">
         <?= $this->translate( 'central.site.create.confirm.createSite', 'central' ) ?>
     </a>
