@@ -2,9 +2,30 @@
 -- set current schema at settings:site.createSchema.siteCreatorSiteSchema     --
 --------------------------------------------------------------------------------
 
-INSERT INTO "_central"."settings" ( "key", "value" )
-                           VALUES ( 'site.createSchema.siteCreatorSiteSchema',
-                                    CURRENT_SCHEMA );
+DO LANGUAGE plpgsql $$
+BEGIN
+
+    IF NOT EXISTS ( SELECT "value"
+                      FROM "_central"."settings"
+                     WHERE "key" = 'site.createSchema.referenceSchema' ) THEN
+
+        INSERT INTO "_central"."settings" ( "key", "value" )
+                                   VALUES ( 'site.createSchema.referenceSchema',
+                                            '_template' );
+
+    END IF;
+
+    IF NOT EXISTS ( SELECT "value"
+                      FROM "_central"."settings"
+                     WHERE "key" = 'site.createSchema.siteCreatorSiteSchema' ) THEN
+
+        INSERT INTO "_central"."settings" ( "key", "value" )
+                                   VALUES ( 'site.createSchema.siteCreatorSiteSchema',
+                                            CURRENT_SCHEMA );
+
+    END IF;
+
+END $$;
 
 --------------------------------------------------------------------------------
 -- copy data into _central.user                                               --
