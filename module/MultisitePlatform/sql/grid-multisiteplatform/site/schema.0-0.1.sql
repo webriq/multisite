@@ -44,7 +44,7 @@ ALTER TABLE "_central"."user"
 
 SELECT setval(
     '_central.user_id_seq',
-    ( SELECT MAX( "last_value" ) + 1
+    ( SELECT MAX( "last_value" )
         FROM ( SELECT "last_value"
                  FROM "user_id_seq"
                 UNION ALL
