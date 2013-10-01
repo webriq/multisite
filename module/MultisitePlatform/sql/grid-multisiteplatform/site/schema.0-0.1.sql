@@ -44,8 +44,12 @@ ALTER TABLE "_central"."user"
 
 SELECT setval(
     '_central.user_id_seq',
-    ( SELECT "last_value" + 1 FROM "user_id_seq" ),
-    FALSE
+    ( SELECT MAX( "last_value" ) + 1
+        FROM ( SELECT "last_value"
+                 FROM "user_id_seq"
+                UNION ALL
+               SELECT "last_value"
+                 FROM "_central"."user_id_seq" ) AS "seqs" )
 );
 
 --------------------------------------------------------------------------------
