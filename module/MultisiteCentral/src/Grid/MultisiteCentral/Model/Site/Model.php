@@ -19,7 +19,7 @@ class Model implements MapperAwareInterface
     /**
      * Construct model
      *
-     * @param \MultisiteCentral\Model\Site\Mapper $multisiteCentralSiteMapper
+     * @param   Mapper  $multisiteCentralSiteMapper
      */
     public function __construct( Mapper $multisiteCentralSiteMapper )
     {
@@ -29,8 +29,8 @@ class Model implements MapperAwareInterface
     /**
      * Get paginator for listing
      *
-     * @param  int|null $ownerId
-     * @return \Zend\Paginator\Paginator
+     * @param   int|null    $ownerId
+     * @return  \Zend\Paginator\Paginator
      */
     public function getPaginator( $ownerId = null )
     {
@@ -68,8 +68,8 @@ class Model implements MapperAwareInterface
     /**
      * Create a new site from data
      *
-     * @param array|null $data
-     * @return \MultisiteCentral\Model\Site\Structure
+     * @param   array|null $data
+     * @return  Structure
      */
     public function create( $data )
     {
@@ -80,13 +80,25 @@ class Model implements MapperAwareInterface
     /**
      * Find a site by id
      *
-     * @param int $id
-     * @return \MultisiteCentral\Model\Site\Structure
+     * @param   int $id
+     * @return  Structure
      */
     public function find( $id )
     {
         return $this->getMapper()
                     ->find( $id );
+    }
+
+    /**
+     * Find a site by schema
+     *
+     * @param   string  $schema
+     * @return  Structure
+     */
+    public function findBySchema( $schema )
+    {
+        return $this->getMapper()
+                    ->findBySchema( $schema );
     }
 
 }

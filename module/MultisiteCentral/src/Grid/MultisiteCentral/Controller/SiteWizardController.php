@@ -118,7 +118,7 @@ class SiteWizardController extends AbstractWizardController
                             $this->setStepStore( $stepName, $values );
                         }
 
-                        $data->delete( $hash );
+                        // $data->delete( $hash );
                     }
                     else
                     {
@@ -341,10 +341,39 @@ class SiteWizardController extends AbstractWizardController
         $domainName = $startData['subdomain'] .
                       $moduleData['domainPostfix'];
 
+        if ( empty( $schemaName ) )
+        {
+            return array(
+                'error'     => true,
+                'message'   => 'central.site.create.error.schema',
+            );
+        }
+
         // generate site (schema)
 
+        /* @var $siteModel Grid\MultisiteCentral\Model\Site\Model */
         $siteModel  = $this->getServiceLocator()
                            ->get( 'Grid\MultisiteCentral\Model\Site\Model' );
+
+        $site = $siteModel->findBySchema( $schemaName );
+
+        if ( ! empty( $site ) )
+        {
+            if ( $site->ownerId == $userId )
+            {
+                return array(
+                    'error'     => true,
+                    'message'   => 'central.site.create.error.existsOwned',
+                );
+            }
+            else
+            {
+                return array(
+                    'error'     => true,
+                    'message'   => 'central.site.create.error.exists',
+                );
+            }
+        }
 
         $site = $siteModel->create( array(
             'schema'    => $schemaName,
@@ -362,6 +391,7 @@ class SiteWizardController extends AbstractWizardController
 
         // save the default domain
 
+        /* @var $domainModel Grid\MultisitePlatform\Model\Domain\Model */
         $domainModel = $this->getServiceLocator()
                             ->get( 'Grid\MultisitePlatform\Model\Domain\Model' );
 
@@ -384,6 +414,7 @@ class SiteWizardController extends AbstractWizardController
             ? (string) $this->locale()
             : $contentData['locale'];
 
+        /* @var $settingsModel Grid\Core\Model\Settings\Model */
         $settingsModel = clone $this->getServiceLocator()
                                     ->get( 'Grid\Core\Model\Settings\Model' );
 
@@ -417,6 +448,7 @@ class SiteWizardController extends AbstractWizardController
 
         // create default layout
 
+        /* @var $paragraphModel Grid\Paragraph\Model\Paragraph\Model */
         $paragraphModel = clone $this->getServiceLocator()
                                      ->get( 'Grid\Paragraph\Model\Paragraph\Model' );
 
@@ -460,6 +492,7 @@ class SiteWizardController extends AbstractWizardController
 
         // create default subdomain
 
+        /* @var $subdomainModel Grid\Core\Model\SubDomain\Model */
         $subdomainModel = clone $this->getServiceLocator()
                                      ->get( 'Grid\Core\Model\SubDomain\Model' );
 
@@ -485,6 +518,7 @@ class SiteWizardController extends AbstractWizardController
 
         if ( ! empty( $contentData['title'] ) )
         {
+            /* @var $uriModel Grid\Core\Model\Uri\Model */
             $uriModel = clone $this->getServiceLocator()
                                    ->get( 'Grid\Core\Model\Uri\Model' );
 
@@ -508,6 +542,7 @@ class SiteWizardController extends AbstractWizardController
 
         if ( ! empty( $contentData['title'] ) )
         {
+            /* @var $menuModel Grid\Menu\Model\Menu\Model */
             $menuModel = clone $this->getServiceLocator()
                                     ->get( 'Grid\Menu\Model\Menu\Model' );
 

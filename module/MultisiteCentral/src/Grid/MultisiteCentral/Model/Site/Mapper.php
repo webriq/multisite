@@ -124,4 +124,17 @@ class Mapper extends ReadWriteMapperAbstract
         return $columns;
     }
 
+    /**
+     * Find a site by schema
+     *
+     * @param   string  $schema
+     * @return  Structure
+     */
+    public function findBySchema( $schema )
+    {
+        return $this->findOne( array(
+            'schema' => (string) $schema,
+        ) );
+    }
+
 }

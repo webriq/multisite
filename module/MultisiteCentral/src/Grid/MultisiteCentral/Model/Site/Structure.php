@@ -59,7 +59,7 @@ class Structure extends MapperAwareAbstract
 
     /**
      * @param   array|string|null   $domains
-     * @return  \MultisiteCentral\Model\Site\Structure
+     * @return  Structure
      */
     public function setDomains( $domains )
     {
@@ -120,7 +120,7 @@ class Structure extends MapperAwareAbstract
     /**
      * Delete should remove uploads directory too
      *
-     * @return int
+     * @return  int
      */
     public function delete()
     {

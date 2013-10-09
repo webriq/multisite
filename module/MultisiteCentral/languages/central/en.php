@@ -14,6 +14,8 @@ return array(
     'central.site.create.email' => 'Email',
     'central.site.create.error' => 'Error at site-creation:',
     'central.site.create.error.content' => 'Content cannot be created',
+    'central.site.create.error.exists' => 'Site already exists',
+    'central.site.create.error.existsOwned' => 'Your site already exists',
     'central.site.create.error.layout' => 'Layout cannot be created',
     'central.site.create.error.menu' => 'Content cannot be inserted to the menu',
     'central.site.create.error.schema' => 'Site-database cannot be created',
