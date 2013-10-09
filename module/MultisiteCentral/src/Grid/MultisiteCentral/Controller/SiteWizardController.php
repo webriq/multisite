@@ -99,8 +99,9 @@ class SiteWizardController extends AbstractWizardController
 
             case 'check':
 
-                $hash = $this->params()
-                             ->fromQuery( 'hash' );
+                $expired = false;
+                $hash    = $this->params()
+                                ->fromQuery( 'hash' );
 
                 if ( ! empty( $hash ) )
                 {
@@ -119,21 +120,36 @@ class SiteWizardController extends AbstractWizardController
 
                         $data->delete( $hash );
                     }
+                    else
+                    {
+                        $expired = true;
+                    }
                 }
 
-                $postfix = $this->getServiceLocator()
-                                ->get( 'Config' )
-                                     [ 'modules' ]
-                                     [ 'Grid\MultisiteCentral' ]
-                                     [ 'domainPostfix' ];
+                if ( $expired )
+                {
+                    $model->setDescriptionPartial( 'grid/multisite-central/site-wizard/expired' )
+                          ->setOptions( array(
+                                'finish'    => false,
+                                'next'      => $this->startStep,
+                            ) );
+                }
+                else
+                {
+                    $postfix = $this->getServiceLocator()
+                                    ->get( 'Config' )
+                                         [ 'modules' ]
+                                         [ 'Grid\MultisiteCentral' ]
+                                         [ 'domainPostfix' ];
 
-                $model->setVariable( 'stores', $this->getStepStores( false ) )
-                      ->setVariable( 'domainPostfix', $postfix )
-                      ->setDescriptionPartial( 'grid/multisite-central/site-wizard/check' )
-                      ->setOptions( array(
-                            'finish'    => true,
-                            'next'      => 'finish',
-                        ) );
+                    $model->setVariable( 'stores', $this->getStepStores( false ) )
+                          ->setVariable( 'domainPostfix', $postfix )
+                          ->setDescriptionPartial( 'grid/multisite-central/site-wizard/check' )
+                          ->setOptions( array(
+                                'finish'    => true,
+                                'next'      => 'finish',
+                            ) );
+                }
 
                 break;
 

@@ -20,6 +20,7 @@ return array(
     'central.site.create.error.settings' => 'Settings cannot be saved',
     'central.site.create.error.subdomain' => 'Subdomain cannot be created',
     'central.site.create.error.user' => 'User cannot be created',
+    'central.site.create.expired' => 'Sorry, but it seems your site\'s pre-entered data has expired; but you can always start over your site\'s creation.',
     'central.site.create.headTitle' => 'Site title',
     'central.site.create.keywords' => 'Keywords',
     'central.site.create.layout' => 'Layout',
