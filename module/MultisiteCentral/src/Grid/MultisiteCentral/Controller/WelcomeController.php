@@ -19,8 +19,9 @@ class WelcomeController extends AbstractActionController
     public function indexAction()
     {
         $this->paragraphLayout();
-        $auth       = new AuthenticationService;
         $controller = preg_replace( '/Controller$/', '', get_class( $this ) );
+        $auth       = $this->getServiceLocator()
+                           ->get( 'Zend\Authentication\AuthenticationService' );
 
         if ( ! $auth->hasIdentity() )
         {
@@ -132,8 +133,10 @@ class WelcomeController extends AbstractActionController
     public function siteListAction()
     {
         $request = $this->getRequest();
-        $auth    = new AuthenticationService;
-        $page    = (int) $request->getPost(
+        $auth    = $this->getServiceLocator()
+                        ->get( 'Zend\Authentication\AuthenticationService' );
+
+        $page = (int) $request->getPost(
             'page', $request->getQuery( 'page', 0 )
         );
 
@@ -158,8 +161,9 @@ class WelcomeController extends AbstractActionController
      */
     public function deleteSiteAction()
     {
-        $auth   = new AuthenticationService;
         $params = $this->params();
+        $auth   = $this->getServiceLocator()
+                       ->get( 'Zend\Authentication\AuthenticationService' );
 
         if ( ! $auth->hasIdentity() )
         {

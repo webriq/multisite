@@ -4,7 +4,7 @@ $this->headLink()
      ->appendStylesheet( '/styles/central.css', 'all' );
 
 $warn                   = false;
-$auth                   = new \Zend\Authentication\AuthenticationService;
+$auth                   = $this->authentication();
 $config                 = $this->appService( 'Config' );
 $isRegistrationEnabled  = ! empty( $config[ 'modules'               ]
                                           [ 'Grid\User'             ]

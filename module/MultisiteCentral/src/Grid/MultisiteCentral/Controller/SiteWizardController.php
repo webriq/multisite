@@ -6,7 +6,6 @@ use Zend\Form\Form;
 use Zork\Stdlib\Message;
 use Grid\Core\View\Model\WizardStep;
 use Zend\Mvc\Exception\RuntimeException;
-use Zend\Authentication\AuthenticationService;
 use Grid\Core\Controller\AbstractWizardController;
 
 /**
@@ -21,6 +20,17 @@ class SiteWizardController extends AbstractWizardController
      * @const string
      */
     const CLONE_FROM = '_central';
+
+    /**
+     * Get authentication service
+     *
+     * @return  \Zend\Authentication\AuthenticationService
+     */
+    protected function getAuthenticationService()
+    {
+        return $this->getServiceLocator()
+                    ->get( 'Zend\Authentication\AuthenticationService' );
+    }
 
     /**
      * Get step model
@@ -38,7 +48,7 @@ class SiteWizardController extends AbstractWizardController
         {
             case $this->startStep:
 
-                $auth = new AuthenticationService;
+                $auth = $this->getAuthenticationService();
 
                 $model->setOptions( array(
                     'finish'    => false,
@@ -89,7 +99,7 @@ class SiteWizardController extends AbstractWizardController
 
             case 'settings':
 
-                $auth = new AuthenticationService;
+                $auth = $this->getAuthenticationService();
                 $model->setOptions( array(
                     'finish'    => true,
                     'next'      => $auth->hasIdentity() ? 'check' : 'finish',
@@ -187,7 +197,7 @@ class SiteWizardController extends AbstractWizardController
      */
     protected function isAllowed()
     {
-        $auth           = new AuthenticationService;
+        $auth           = $this->getAuthenticationService();
         $serviceLocator = $this->getServiceLocator();
         $config         = $serviceLocator->get( 'Config' );
         $permissions    = $serviceLocator->get( 'Grid\User\Model\Permissions\Model' );
@@ -251,7 +261,7 @@ class SiteWizardController extends AbstractWizardController
      */
     public function finishAction()
     {
-        $auth           = new AuthenticationService;
+        $auth           = $this->getAuthenticationService();
         $startData      = $this->getStepStore( 'start' );
         $userData       = $this->getStepStore( 'user' );
         $settingsData   = $this->getStepStore( 'settings' );
@@ -626,8 +636,8 @@ class SiteWizardController extends AbstractWizardController
         $result     = $this->getServiceLocator()
                            ->get( 'Grid\User\Authentication\Service' )
                            ->login( array( 'hash' => $hash ),
-                                     $this->getSessionManager(),
-                                     new AuthenticationService );
+                                    $this->getSessionManager(),
+                                    $this->getAuthenticationService() );
 
         /* @var $logger \Zork\Log\LoggerManager */
         $logger = $this->getServiceLocator()

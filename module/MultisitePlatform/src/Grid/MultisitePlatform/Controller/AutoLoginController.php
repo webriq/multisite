@@ -3,7 +3,6 @@
 namespace Grid\MultisitePlatform\Controller;
 
 use Zend\Mvc\Exception\RuntimeException;
-use Zend\Authentication\AuthenticationService;
 use Zend\Mvc\Controller\AbstractActionController;
 
 /**
@@ -21,7 +20,8 @@ class AutoLoginController extends AbstractActionController
      */
     public function byDomainAction()
     {
-        $auth   = new AuthenticationService;
+        $auth   = $this->getServiceLocator()
+                       ->get( 'Zend\Authentication\AuthenticationService' );
         $domain = $this->params()
                        ->fromRoute( 'domain' );
 
