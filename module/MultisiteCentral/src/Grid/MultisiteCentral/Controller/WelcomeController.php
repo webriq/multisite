@@ -150,6 +150,7 @@ class WelcomeController extends AbstractActionController
 
         return array(
             'page'      => $page,
+            'user'      => $auth->getIdentity(),
             'paginator' => $this->getServiceLocator()
                                 ->get( 'Grid\MultisiteCentral\Model\Site\Model' )
                                 ->getPaginator( $auth->getIdentity()->id ),
