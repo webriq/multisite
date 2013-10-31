@@ -1,7 +1,7 @@
 -- insert default values for table: module
 
 INSERT INTO "module" ( "module", "enabled" )
-     VALUES ( 'Grid\DomainManager', TRUE );
+     VALUES ( 'Grid\DomainManager', FALSE );
 
 -- insert default values for table: user_right
 
