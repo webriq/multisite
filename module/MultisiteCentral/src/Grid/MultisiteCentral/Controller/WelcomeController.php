@@ -68,7 +68,8 @@ class WelcomeController extends AbstractActionController
                         ) );
 
         return array(
-            'parts' => $parts,
+            'parts'     => $parts,
+            'user'      => $auth->getIdentity(),
         );
     }
 

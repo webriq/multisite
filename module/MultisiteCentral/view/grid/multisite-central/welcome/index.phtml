@@ -1,5 +1,17 @@
-<?php $this->headTitle( $this->translate( 'central.welcome', 'central' ) ); ?>
-<?php foreach ( $this->parts as $part ): ?>
-    <?= $this->render( $part ) ?>
+<?php
 
-<?php endforeach ?>
+$this->headTitle( $this->translate( 'central.welcome', 'central' ) );
+
+$content = '';
+foreach ( $this->parts as $part )
+{
+    $content .= $this->render( $part ) . PHP_EOL;
+}
+
+echo $this->viewWidget(
+    'Grid\MultisiteCentral\Welcome\Index',
+    $content,
+    array(
+        'user' => $this->user,
+    )
+);
