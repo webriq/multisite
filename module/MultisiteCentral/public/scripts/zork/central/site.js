@@ -122,7 +122,9 @@
 
                               if ( $( ".paragraph-like.MultisiteCentral.siteList" ).length )
                               {
-                                  global.location.reload( true );
+                                  global.location.href = "/app/"
+                                                       + js.core.defaultLocale
+                                                       + "/central/welcome?";
                               }
                           } );
 
