@@ -13,7 +13,8 @@ BEGIN
         ALTER TABLE "user"
              ENABLE TRIGGER USER;
 
-        SELECT setval( 'user_id_seq', 0 );
+        ALTER SEQUENCE "user_id_seq"
+               RESTART;
 
     END IF;
 
