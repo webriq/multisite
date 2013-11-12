@@ -67,8 +67,9 @@ BEGIN
                  2              AS "groupId", -- site-owner
                  "locale"
             FROM "_central"."user_x_site"
-           WHERE "siteId" = "v_site_id"
-             AND "userId" = NEW."ownerId"
+           WHERE "siteId"   = "v_site_id"
+             AND "userId"   = NEW."ownerId"
+             AND "groupId" <> 1
            LIMIT 1;
 
     -- every auto-generated user will be unified
