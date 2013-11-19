@@ -51,7 +51,6 @@ class WelcomeController extends AbstractAdminController
      */
     public function indexAction()
     {
-        $this->paragraphLayout();
         $form    = null;
         $hash    = null;
         $request = $this->getRequest();
