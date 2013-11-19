@@ -1,6 +1,7 @@
 <?php
 
 return array(
+    'central.admin.title' => 'Account pages',
     'central.site.create' => 'Create a site',
     'central.site.create.cancel' => 'Site-creation cancelled',
     'central.site.create.captcha' => 'Captcha',

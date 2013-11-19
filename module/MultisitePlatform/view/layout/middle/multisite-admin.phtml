@@ -28,9 +28,9 @@ $menu = $this->navigation( $this->navigationPages )
              ->setTranslatorEnabled( false );
 
 $this->headTitle()
-     ->prepend( $title = $this->translate(
-            'admin.notAllowed.title',
-            'admin'
+     ->append( $title = $this->translate(
+            'central.admin.title',
+            'central'
         ) );
 
 if ( $this->hasIdentity ): ?>
