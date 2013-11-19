@@ -76,7 +76,7 @@
                               .on( "click", function () {
                                   close();
 
-                                  if ( $( ".paragraph-like.MultisiteCentral.siteList" ).length )
+                                  if ( $( ".sub-page.site-list" ).length )
                                   {
                                       global.location.reload( true );
                                   }
