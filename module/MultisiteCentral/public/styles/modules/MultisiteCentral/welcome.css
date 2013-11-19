@@ -1,6 +1,1 @@
 @charset "utf-8";
-
-.admin .page .sub-page ~ .sub-page
-{
-    margin-top: 40px;
-}
