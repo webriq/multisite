@@ -28,7 +28,7 @@ $menu = $this->navigation( $this->navigationPages )
              ->setTranslatorEnabled( false );
 
 $this->headTitle()
-     ->append( $title = $this->translate(
+     ->splice( 1, 0, $title = $this->translate(
             'central.admin.title',
             'central'
         ) );
