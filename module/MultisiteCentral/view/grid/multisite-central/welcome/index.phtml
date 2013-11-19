@@ -2,8 +2,8 @@
 
 $this->headTitle( $title = $this->translate( 'central.welcome', 'central' ) );
 
-/* $this->headLink()
-        ->appendStylesheet( '/styles/central.css', 'all' ); */
+$this->headLink()
+     ->appendStylesheet( '/styles/modules/MultisiteCentral/welcome.css', 'all' );
 
 $paginationControl = $this->paginationControl(
     $this->paginator
@@ -22,7 +22,7 @@ $this->placeholder( 'content' )
 
 if ( ! empty( $this->form ) ): ?>
 
-    <div class="paragraph-like MultisiteCentral siteWizard">
+    <div class="sub-page site-wizard">
         <?= $this->render( 'grid/multisite-central/site-wizard/content', array(
             'form' => $this->form,
         ) ) ?>
@@ -41,7 +41,7 @@ if ( ! empty( $this->form ) ): ?>
     </div>
 <?php endif ?>
 
-    <div class="paragraph-like MultisiteCentral siteList">
+    <div class="sub-page site-list">
         <h3><?= $this->translate( 'central.site.list.title', 'central' ) ?></h3>
         <form action="?" method="post">
             <?= $paginationControl ?>
