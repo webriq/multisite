@@ -2,92 +2,23 @@
 
 namespace Grid\MultisiteCentral\Controller;
 
-use Zend\Authentication\AuthenticationService;
-use Zend\Mvc\Controller\AbstractActionController;
+use Grid\MultisitePlatform\Controller\AbstractAdminController;
 
 /**
  * WelcomeController
  *
  * @author David Pozsar <david.pozsar@megaweb.hu>
  */
-class WelcomeController extends AbstractActionController
+class WelcomeController extends AbstractAdminController
 {
 
     /**
-     * Index action
+     * Get site-wizard form (first step, with fixed submit: next)
+     *
+     * @return  \Zork\Form\Form
      */
-    public function indexAction()
+    protected function getSiteWizardForm()
     {
-        $this->paragraphLayout();
-        $controller = preg_replace( '/Controller$/', '', get_class( $this ) );
-        $auth       = $this->getServiceLocator()
-                           ->get( 'Zend\Authentication\AuthenticationService' );
-
-        if ( ! $auth->hasIdentity() )
-        {
-            return $this->redirect()
-                        ->toUrl( '/' );
-        }
-
-        $parts = array();
-
-        if ( $this->getServiceLocator()
-                  ->get( 'Grid\User\Model\Permissions\Model' )
-                  ->isAllowed( 'central.site', 'create' ) )
-        {
-            $parts[] = $this->forward()
-                            ->dispatch( $controller, array(
-                                'locale' => (string) $this->locale(),
-                                'action' => 'site-wizard',
-                            ) );
-
-            $continue = $this->params()
-                             ->fromQuery( 'continue' );
-
-            if ( $continue )
-            {
-                $data = $this->getServiceLocator()
-                             ->get( 'Grid\MultisiteCentral\Model\SiteWizardData' );
-
-                if ( $data->has( $continue ) )
-                {
-                    $parts[] = $this->forward()
-                                    ->dispatch( $controller, array(
-                                        'locale' => (string) $this->locale(),
-                                        'action' => 'continue',
-                                        'hash'   => $continue,
-                                    ) );
-                }
-            }
-        }
-
-        $parts[] = $this->forward()
-                        ->dispatch( $controller, array(
-                            'locale' => (string) $this->locale(),
-                            'action' => 'site-list',
-                        ) );
-
-        return array(
-            'parts'     => $parts,
-            'user'      => $auth->getIdentity(),
-        );
-    }
-
-    /**
-     * Site-wizard action
-     */
-    public function siteWizardAction()
-    {
-        if ( ! $this->getServiceLocator()
-                    ->get( 'Grid\User\Model\Permissions\Model' )
-                    ->isAllowed( 'central.site', 'create' ) )
-        {
-            $this->getResponse()
-                 ->setStatusCode( 403 );
-
-            return;
-        }
-
         $form = $this->getServiceLocator()
                      ->get( 'Form' )
                      ->create( 'Grid\MultisiteCentral\SiteWizard\Start' );
@@ -112,44 +43,51 @@ class WelcomeController extends AbstractActionController
             ),
         ) );
 
-        return array(
-            'form' => $form,
-        );
+        return $form;
     }
 
     /**
-     * Continue (site-creation) action
+     * Index action
      */
-    public function continueAction()
+    public function indexAction()
     {
-        return array(
-            'hash' => $this->params()
-                           ->fromRoute( 'hash' )
-        );
-    }
-
-    /**
-     * Site-list action
-     */
-    public function siteListAction()
-    {
+        $this->paragraphLayout();
+        $form    = null;
+        $hash    = null;
         $request = $this->getRequest();
+        $page    = (int) $request->getPost( 'page', $request->getQuery( 'page' ) );
         $auth    = $this->getServiceLocator()
                         ->get( 'Zend\Authentication\AuthenticationService' );
 
-        $page = (int) $request->getPost(
-            'page', $request->getQuery( 'page', 0 )
-        );
-
         if ( ! $auth->hasIdentity() )
         {
-            $this->getResponse()
-                 ->setStatusCode( 403 );
+            return $this->redirect()
+                        ->toUrl( '/' );
+        }
 
-            return;
+        if ( $this->getServiceLocator()
+                  ->get( 'Grid\User\Model\Permissions\Model' )
+                  ->isAllowed( 'central.site', 'create' ) )
+        {
+            $form     = $this->getSiteWizardForm();
+            $continue = $this->params()
+                             ->fromQuery( 'continue' );
+
+            if ( $continue )
+            {
+                $data = $this->getServiceLocator()
+                             ->get( 'Grid\MultisiteCentral\Model\SiteWizardData' );
+
+                if ( $data->has( $continue ) )
+                {
+                    $hash = $continue;
+                }
+            }
         }
 
         return array(
+            'form'      => $form,
+            'hash'      => $hash,
             'page'      => $page,
             'user'      => $auth->getIdentity(),
             'paginator' => $this->getServiceLocator()
