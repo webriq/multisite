@@ -15,13 +15,13 @@ $paginationControl = $this->paginationControl(
 $this->placeholder( 'content' )
      ->captureStart();
 
-if ( isset( $this->form ) ): ?>
+if ( ! empty( $this->form ) ): ?>
 
 <div class="paragraph-like MultisiteCentral siteWizard">
     <?= $this->render( 'grid/multisite-central/site-wizard/content', array(
         'form' => $this->form,
     ) ) ?>
-<?php if ( isset( $this->hash ) ): ?>
+<?php if ( ! empty( $this->hash ) ): ?>
 
     <p class="info">
         <a href="/app/<?= $this->locale() ?>/central/site-wizard/check?hash=<?=
@@ -35,7 +35,6 @@ if ( isset( $this->form ) ): ?>
 
 </div>
 <?php endif ?>
-
 
 <div class="paragraph-like MultisiteCentral siteList">
     <h3><?= $this->translate( 'central.site.list.title', 'central' ) ?></h3>
