@@ -96,43 +96,31 @@ class Patch extends AbstractPatch
             $this->getInstaller()
                  ->convertToMultisite();
 
+            $this->setupConfigs( $domain );
+        }
+
+        if ( ! $this->isZeroVersion( $to ) )
+        {
             $developer = $this->selectFromTable( 'user', 'id', array(
                 'groupId' => static::DEVELOPER_GROUP,
             ) );
 
             if ( $developer )
             {
-                $exists = $this->selectFromTable( array( '_template', 'user' ), 'id', array(
-                    'id' => $developer,
-                ) );
-
-                if ( ! $exists )
-                {
-                    $this->query( 'ALTER TABLE "_template"."user"
-                                       DISABLE TRIGGER USER' );
-
-                    $this->query( 'INSERT INTO "_template"."user"
-                                        SELECT *
-                                          FROM "user"
-                                         WHERE "id" = :developer',
-                                  array( 'developer' => $developer ) );
-
-                    $this->query( 'ALTER TABLE "_template"."user"
-                                        ENABLE TRIGGER USER' );
-
-                    $this->query( 'SELECT setval( :sequence, :developer )',
-                                  array( 'sequence'  => '"_template"."user_id_seq"',
-                                         'developer' => $developer ) );
-
-                    $this->query( 'INSERT INTO "_central"."user_unified" ( "siteId", "userId" )
-                                        SELECT "id"         AS "siteId",
-                                               :developer   AS "userId"
-                                          FROM "_central"."site"',
-                                  array( 'developer' => $developer ) );
-                }
+                $this->query(
+                    'INSERT INTO "_central"."user_unified" ( "siteId", "userId" )
+                          SELECT "id"         AS "siteId",
+                                 :developer   AS "userId"
+                            FROM "_central"."site"
+                           WHERE NOT EXISTS(
+                                     SELECT *
+                                       FROM "_central"."user_unified"
+                                      WHERE "siteId" = "site"."id"
+                                        AND "userId" = :developer
+                                 )',
+                    array( 'developer' => $developer )
+                );
             }
-
-            $this->setupConfigs( $domain );
         }
     }
 
