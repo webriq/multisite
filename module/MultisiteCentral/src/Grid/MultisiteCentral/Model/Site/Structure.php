@@ -49,6 +49,10 @@ class Structure extends MapperAwareAbstract
      */
     private $domains;
 
+    public function getSchema() {
+        return $this->schema;
+    }
+    
     /**
      * @return string
      */
