@@ -1,17 +1,112 @@
 <?php
 
-$this->headTitle( $this->translate( 'central.welcome', 'central' ) );
+$this->headTitle( $title = $this->translate( 'central.welcome', 'central' ) );
 
-$content = '';
-foreach ( $this->parts as $part )
-{
-    $content .= $this->render( $part ) . PHP_EOL;
-}
+$this->headLink()
+     ->appendStylesheet( '/styles/modules/MultisiteCentral/welcome.css', 'all' );
+
+$paginationControl = $this->paginationControl(
+    $this->paginator
+         ->setCurrentPageNumber( $this->page ),
+    'Sliding',
+    'paginator/default'
+);
+
+?>
+<h1><?= $this->escapeHtml( $title ) ?></h1>
+<div class="page">
+<?php
+
+$this->placeholder( 'content' )
+     ->captureStart();
+
+if ( ! empty( $this->form ) ): ?>
+
+    <div class="sub-page site-wizard">
+        <?= $this->render( 'grid/multisite-central/site-wizard/content', array(
+            'form' => $this->form,
+        ) ) ?>
+<?php if ( ! empty( $this->hash ) ): ?>
+
+        <p class="info">
+            <a href="/app/<?= $this->locale() ?>/central/site-wizard/check?hash=<?=
+               $this->escapeHtmlAttr( $this->hash ) ?>"
+               target="_blank" data-js-type="js.central.site.confirmed">
+                <?= $this->translate( 'central.site.create.confirm.createSite',
+                                      'central' ) ?>
+            </a>
+        </p>
+<?php endif ?>
+
+    </div>
+<?php endif ?>
+
+    <div class="sub-page site-list">
+        <h3><?= $this->translate( 'central.site.list.title', 'central' ) ?></h3>
+        <form action="?" method="post">
+            <?= $paginationControl ?>
+
+            <table class="list max-width no-border">
+<?php if ( ! $this->paginator->getTotalItemCount() ): ?>
+
+                <tfoot>
+                    <tr class="empty">
+                        <td class="info">
+                            <i><?= $this->translate( 'central.site.noData', 'central' ) ?></i>
+                        </td>
+                    </tr>
+                </tfoot>
+<?php else: ?>
+                <tbody>
+<?php foreach ( $this->paginator as $row ): ?>
+
+                    <tr class="row">
+                        <td class="field field-domain">
+<?php foreach ( $row->domains as $domain ):
+    $url = $this->url( 'Grid\MultisitePlatform\AutoLogin\ByDomain', array(
+        'locale'    => (string) $this->locale(),
+        'domain'    => $domain,
+    ) ); ?>
+
+                            <a href="<?= $this->escapeHtmlAttr( $url ) ?>"><?=
+                                         $domain ?></a><br />
+<?php endforeach ?>
+
+                        </td>
+                        <td class="field field-created">
+                            <?= $this->dateTime( $row->created ) ?>
+
+                        </td>
+                        <td class="field field-actions">
+                            <a class="action-button delete"
+                               title="<?= $this->translate( 'default.delete' ) ?>"
+                               onclick="return js.require('js.ui.dialog').confirm(this);"
+                               href="/app/<?= $this->locale() ?>/central/delete-site/<?= $row->id ?>">&nbsp;</a>
+                        </td>
+                    </tr>
+<?php endforeach ?>
+
+                </tbody>
+<?php endif ?>
+
+            </table>
+            <?= $paginationControl ?>
+
+        </form>
+    </div>
+<?php
+
+$this->placeholder( 'content' )
+     ->captureEnd();
 
 echo $this->viewWidget(
     'Grid\MultisiteCentral\Welcome\Index',
-    $content,
+    (string) $this->placeholder( 'content' ),
     array(
         'user' => $this->user,
     )
 );
+
+?>
+
+</div>

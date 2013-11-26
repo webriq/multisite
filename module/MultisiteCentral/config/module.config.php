@@ -159,7 +159,7 @@ return array(
         ),
         'Grid\MultisiteCentral'  => array(
             'schemaPrefix'  => 'site_',
-            'schemaPostfix' => '_dev',
+            'schemaPostfix' => '',
             'domainPostfix' => 'sites.local',
             'uploadsFiles'  => array(),
             'uploadsDirs'   => array(
@@ -168,6 +168,16 @@ return array(
                 'snippets',
                 'pages/images',
                 'pages/documents',
+            ),
+        ),
+        'Grid\MultisitePlatform' => array(
+            'navigation' => array(
+                'welcome' => array(
+                    'order'         => 2,
+                    'label'         => 'central.welcome',
+                    'textDomain'    => 'central',
+                    'route'         => 'Grid\MultisiteCentral\Welcome\Index',
+                ),
             ),
         ),
     ),
