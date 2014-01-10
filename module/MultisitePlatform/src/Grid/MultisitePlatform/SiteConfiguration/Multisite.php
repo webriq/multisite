@@ -33,7 +33,7 @@ class Multisite extends AbstractDomainAware
             SELECT *
               FROM ' . $platform->quoteIdentifier( '_central' ) . '.'
                      . $platform->quoteIdentifier( 'fulldomain' ) . '
-             WHERE ' . $platform->quoteIdentifier( 'fulldomain' ) . '
+             WHERE LOWER( ' . $platform->quoteIdentifier( 'fulldomain' ) . ' )
                  = LOWER( ' . $driver->formatParameterName( 'fulldomain' ) . ' )
         ' );
 
