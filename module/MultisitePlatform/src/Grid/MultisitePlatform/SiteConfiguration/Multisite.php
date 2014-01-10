@@ -27,14 +27,14 @@ class Multisite extends AbstractDomainAware
         $sm         = $this->getServiceLocator();
         $platform   = $db->getPlatform();
         $driver     = $db->getDriver();
-        $domain     = $this->getDomain();
+        $domain     = strtolower( $this->getDomain() );
 
         $query = $db->query( '
             SELECT *
               FROM ' . $platform->quoteIdentifier( '_central' ) . '.'
                      . $platform->quoteIdentifier( 'fulldomain' ) . '
              WHERE ' . $platform->quoteIdentifier( 'fulldomain' ) . '
-                 = ' . $driver->formatParameterName( 'fulldomain' ) . '
+                 = LOWER( ' . $driver->formatParameterName( 'fulldomain' ) . ' )
         ' );
 
         $result = $query->execute( array(
