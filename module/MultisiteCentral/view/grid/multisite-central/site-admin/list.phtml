@@ -5,10 +5,12 @@
 $this->headTitle( $title = $this->translate( 'central.site.list.title', 'central' ) );
 $view       = $this;
 $rowSet     = $this->rowSet();
-$domainLink = function ( $domain ) use ( $view ) {
-    return '<a target="_blank" href="http://'
-         . $view->escapeHtmlAttr( $domain ) . '">'
-         . $view->escapeHtml( $domain ) . '</a>';
+$siteInfo   = $this->appService( 'Zork\Db\SiteInfo' );
+$domainLink = function ( $domain ) use ( $view, $siteInfo ) {
+    $port = $siteInfo->getPort();
+    return '<a target="_blank" href="//'
+         . $view->escapeHtmlAttr( $domain . ( $port ? ':' . $port : '' ) )
+         . '">' . $view->escapeHtml( $domain ) . '</a>';
 };
 
 if ( ! $this->format ): ?>

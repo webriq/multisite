@@ -20,10 +20,11 @@ class AutoLoginController extends AbstractActionController
      */
     public function byDomainAction()
     {
-        $auth   = $this->getServiceLocator()
-                       ->get( 'Zend\Authentication\AuthenticationService' );
-        $domain = $this->params()
-                       ->fromRoute( 'domain' );
+        $locator    = $this->getServiceLocator();
+        $siteInfo   = $locator->get( 'Zork\Db\SiteInfo' );
+        $auth       = $locator->get( 'Zend\Authentication\AuthenticationService' );
+        $domain     = $this->params()
+                           ->fromRoute( 'domain' );
 
         if ( empty( $domain ) || ! strstr( $domain, '.' ) )
         {
@@ -32,29 +33,43 @@ class AutoLoginController extends AbstractActionController
             );
         }
 
-        if ( ! $auth->hasIdentity() )
+        $path = '/';
+
+        if ( $auth->hasIdentity() )
         {
-            return $this->redirect()
-                        ->toUrl( 'http://' . $domain );
+            $store = $this->getServiceLocator()
+                          ->get( 'Grid\MultisitePlatform\Authentication\AutoLoginToken' );
+
+            $path = '/' . ltrim(
+                $this->url()
+                     ->fromRoute(
+                         'Grid\User\Authentication\LoginWidth',
+                         array(
+                             'locale' => (string) $this->locale(),
+                         ),
+                         array(
+                             'query' => array(
+                                 'autoLoginToken' => $store->create(
+                                     $auth->getIdentity()
+                                          ->email
+                                 ),
+                             ),
+                         )
+                     ),
+                '/'
+            );
         }
 
-        $store = $this->getServiceLocator()
-                      ->get( 'Grid\MultisitePlatform\Authentication\AutoLoginToken' );
+        $port   = $siteInfo->getPort();
+        $scheme = $siteInfo->getScheme() ?: 'http';
+
+        if ( $port )
+        {
+            $path = ':' . $port . $path;
+        }
 
         return $this->redirect()
-                    ->toUrl( 'http://' . $domain .
-                             $this->url()
-                                  ->fromRoute( 'Grid\User\Authentication\LoginWidth', array(
-                                        'locale' => (string) $this->locale(),
-                                    ), array(
-                                        'query' => array(
-                                            'autoLoginToken' => $store->create(
-                                                $auth->getIdentity()
-                                                     ->email
-                                            ),
-                                        ),
-                                    ) )
-                    );
+                    ->toUrl( $scheme . '://' . $domain . $path );
     }
 
 }

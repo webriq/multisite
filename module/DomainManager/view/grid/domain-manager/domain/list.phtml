@@ -5,8 +5,7 @@
 $this->headTitle( $title = $this->translate( 'domain.list.title', 'domain' ) );
 $view       = $this;
 $rowSet     = $this->rowSet();
-$actualId   = $this->appService( 'Zork\Db\SiteInfo' )
-                   ->getDomainId();
+$siteInfo   = $this->appService( 'Zork\Db\SiteInfo' );
 
 if ( ! $this->format ): ?>
 <h1><?= $title ?></h1>
@@ -21,15 +20,16 @@ if ( ! $this->format ): ?>
               'idn'     => function ( $row ) {
                 return @ idn_to_utf8( $row->domain );
               },
-              'actions' => function ( $row ) use ( $view, $actualId ) {
+              'actions' => function ( $row ) use ( $view, $siteInfo ) {
+                $port = $siteInfo->getPort();
                 $view->placeholder( 'listActions' )->set( '' );
                 $view->placeholder( 'listActions' )->captureStart();
 ?>
     <a class="action-button view" target="_blank"
        title="<?= $view->translate( 'default.view' ) ?>"
-       href="http://<?= $row->domain ?>">
+       href="//<?= $row->domain, $port ? ':' . $port : '' ?>/">
     </a>
-<?php if ( $row->id != $actualId ): ?>
+<?php if ( $row->id != $siteInfo->getDomainId() ): ?>
 <?php if ( $this->isAllowed( 'domain', 'edit' ) ): ?>
     <a class="action-button edit"
        title="<?= $view->translate( 'default.edit' ); ?>"

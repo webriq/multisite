@@ -45,7 +45,11 @@ class Multisite extends AbstractDomainAware
         {
             foreach ( $result as $data )
             {
-                $info = new SiteInfo( $data );
+                $info = new SiteInfo( array_merge( $data, array(
+                    'scheme' => $this->getScheme(),
+                    'port'   => $this->getPort(),
+                ) ) );
+
                 $sm->setService( 'SiteInfo', $info );
 
                 $driver->getConnection()
@@ -82,7 +86,9 @@ class Multisite extends AbstractDomainAware
                 $sm->setService(
                     'RedirectToDomain',
                     new RedirectionService(
+                        $this->getScheme(),
                         $mainDomain,
+                        $this->getPort(),
                         sprintf(
                             'sub-domain "%s" not found',
                             implode( '.', $subParts )
@@ -107,7 +113,9 @@ class Multisite extends AbstractDomainAware
                     $sm->setService(
                         'RedirectToDomain',
                         new RedirectionService(
+                            $this->getScheme(),
                             $config['defaultDomain'],
+                            $this->getPort(),
                             'domain not found',
                             false
                         )
