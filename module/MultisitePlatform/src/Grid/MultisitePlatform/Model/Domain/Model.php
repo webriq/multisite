@@ -18,18 +18,18 @@ class Model implements MapperAwareInterface
     /**
      * Construct model
      *
-     * @param \MultisiteCentral\Model\Domain\Mapper $multisiteCentralDomainMapper
+     * @param   Mapper  $multisitePlatformDomainMapper
      */
-    public function __construct( Mapper $multisiteCentralDomainMapper )
+    public function __construct( Mapper $multisitePlatformDomainMapper )
     {
-        $this->setMapper( $multisiteCentralDomainMapper );
+        $this->setMapper( $multisitePlatformDomainMapper );
     }
 
     /**
      * Get paginator for listing
      *
-     * @param  int|null $siteId
-     * @return \Zend\Paginator\Paginator
+     * @param   int|null    $siteId
+     * @return  \Zend\Paginator\Paginator
      */
     public function getPaginator( $siteId = null )
     {
@@ -51,8 +51,8 @@ class Model implements MapperAwareInterface
     /**
      * Create a new domain from data
      *
-     * @param array|null $data
-     * @return \MultisiteCentral\Model\Domain\Structure
+     * @param   array|null  $data
+     * @return  Structure
      */
     public function create( $data )
     {
@@ -63,13 +63,36 @@ class Model implements MapperAwareInterface
     /**
      * Find a domain by id
      *
-     * @param int $id
-     * @return \MultisiteCentral\Model\Domain\Structure
+     * @param   int $id
+     * @return  Structure
      */
     public function find( $id )
     {
         return $this->getMapper()
                     ->find( $id );
+    }
+
+    /**
+     * Find all domain (for a site)
+     *
+     * @param   int|null    $siteId
+     * @return  Structure[]
+     */
+    public function findAll( $siteId = null )
+    {
+        if ( null === $siteId )
+        {
+            $where = array();
+        }
+        else
+        {
+            $where = array(
+                'siteId' => (int) $siteId,
+            );
+        }
+
+        return $this->getMapper()
+                    ->findAll( $where );
     }
 
 }
