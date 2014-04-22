@@ -188,9 +188,7 @@ return array(
                     'spec'  => array(
                         'options'   => array(
                             'options'   => array(
-                                'central'       => array(
-                                    'label'     => 'paragraph.type-group.central',
-                                    'order'     => 999,
+                                'functions'     => array(
                                     'options'   => array(
                                         'siteWizard' => 'paragraph.type.siteWizard',
                                     ),
