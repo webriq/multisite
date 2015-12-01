@@ -1,10 +1,10 @@
-Multisite modules for Gridguyz
+Multisite modules for WebriQ CMS
 ==============================
 
-This package includes multisite functionality for Gridguyz CMS.
+This package includes multisite functionality for WebriQ CMS.
 
 It means with this package, you can have multiple sites,
-with one Gridguyz installation.
+with one WebriQ CMS installation.
 
 It includes:
 
@@ -15,5 +15,5 @@ It includes:
 License
 -------
 
-Gridguyz is under **Creative Commons Attribution-ShareAlike 3.0** (cc-by-sa-3.0).
+WebriQ CMS is under **BSD 3-Clause** (BSD-3-Clause).  
 More info at [LICENSE.txt](LICENSE.txt).
