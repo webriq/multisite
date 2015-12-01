@@ -1,42 +1,30 @@
 {
-    "name": "gridguyz/multisite",
-    "type": "gridguyz-modules",
-    "description": "Multisite modules for Gridguyz CMS",
-    "license": "CC-BY-SA-3.0",
+    "name": "webriqcms/multisite",
+    "type": "webriqcms-modules",
+    "description": "Multisite modules for WebriQ CMS",
+    "license": "BSD-3-Clause",
     "keywords": [
-        "gridguyz",
+        "webriqcms",
         "module",
         "multisite"
     ],
-    "homepage": "http://gridguyz.com/",
+    "homepage": "http://webriq.com/",
     "authors": [
         {
-            "name": "Gridguyz developer team",
-            "email": "dev@megaweb.hu",
-            "homepage": "http://gridguyz.com/",
-            "role": "Developer team"
-        },
-        {
-            "name": "Mihály Farkas",
-            "email": "mihaly.farkas@megaweb.hu",
-            "homepage": "http://gridguyz.com/",
-            "role": "Developer"
-        },
-        {
-            "name": "David Pozsar",
-            "email": "david.pozsar@megaweb.hu",
-            "homepage": "http://gridguyz.com/",
-            "role": "Developer"
+            "name": "WebriQ Dev Team",
+            "email": "info@webriq.com",
+            "homepage": "http://webriq.com/",
+            "role": "Development Team"
         }
     ],
     "support": {
-        "email": "dev@megaweb.hu",
-        "source": "https://github.com/gridguyz/multisite"
+        "email": "info@webriq.com",
+        "source": "https://github.com/webriq/multisite"
     },
     "require": {
         "php": ">=5.4",
-        "gridguyz/module-installer": "*",
-        "gridguyz/core": "*"
+        "webriqcms/module-installer": "*",
+        "webriqcms/core": "*"
     },
     "autoload": {
         "psr-0": {
@@ -52,13 +40,13 @@
     },
     "extra": {
         "display-icon": {
-            "63": "https://raw.github.com/gridguyz/multisite/%reference%/icons/63x63.png"
+            "63": "https://raw.github.com/webriqcms/multisite/%reference%/icons/63x63.png"
         },
         "display-name": {
             "en": "Multisite & Domain Manager"
         },
         "display-description": {
-            "en": "A. The Multisite Function allows you to create multiple websites instead of just one. It is ideal for those who want to operate several websites on one server.\nB. The Domain Manager Function allows you to allocate a top level domain (TLD) to your GridGuyz website."
+            "en": "A. The Multisite Function allows you to create multiple websites instead of just one. It is ideal for those who want to operate several websites on one server.\nB. The Domain Manager Function allows you to allocate a top level domain (TLD) to your WebriQ CMS website."
         },
         "patch-classes": {
             "Grid\\MultisitePlatform\\Installer\\Patch": "module/MultisitePlatform/src/Grid/MultisitePlatform/Installer/Patch.php"
